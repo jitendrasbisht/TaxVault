@@ -1,3 +1,34 @@
+import {
+  LayoutDashboard,
+  Users,
+  FolderOpen,
+  FileText,
+  Settings,
+} from "lucide-react";
+
+const navigation = [
+  {
+    name: "Dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    name: "Clients",
+    icon: Users,
+  },
+  {
+    name: "Documents",
+    icon: FolderOpen,
+  },
+  {
+    name: "Reports",
+    icon: FileText,
+  },
+  {
+    name: "Settings",
+    icon: Settings,
+  },
+];
+
 function Sidebar() {
   return (
     <aside className="flex min-h-screen w-64 flex-col border-r border-slate-800 bg-slate-900 text-white">
@@ -13,37 +44,27 @@ function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-6">
+      <nav className="flex-1 px-3 py-6">
         <ul className="space-y-2">
-          <li>
-            <button className="w-full rounded-lg bg-slate-800 px-4 py-3 text-left transition hover:bg-slate-700">
-              Dashboard
-            </button>
-          </li>
+          {navigation.map((item, index) => {
+            const Icon = item.icon;
 
-          <li>
-            <button className="w-full rounded-lg px-4 py-3 text-left text-slate-300 transition hover:bg-slate-800 hover:text-white">
-              Clients
-            </button>
-          </li>
+            return (
+              <li key={item.name}>
+                <button
+                  className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition ${
+                    index === 0
+                      ? "bg-slate-800 text-white"
+                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                  }`}
+                >
+                  <Icon size={18} />
 
-          <li>
-            <button className="w-full rounded-lg px-4 py-3 text-left text-slate-300 transition hover:bg-slate-800 hover:text-white">
-              Documents
-            </button>
-          </li>
-
-          <li>
-            <button className="w-full rounded-lg px-4 py-3 text-left text-slate-300 transition hover:bg-slate-800 hover:text-white">
-              Reports
-            </button>
-          </li>
-
-          <li>
-            <button className="w-full rounded-lg px-4 py-3 text-left text-slate-300 transition hover:bg-slate-800 hover:text-white">
-              Settings
-            </button>
-          </li>
+                  <span>{item.name}</span>
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
