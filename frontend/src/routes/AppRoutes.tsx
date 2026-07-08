@@ -3,7 +3,6 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "../components/layout/AppLayout";
 
 import DashboardPage from "../pages/Dashboard";
-import ClientsPage from "../pages/Clients";
 import CasesPage from "../pages/Cases";
 import DocumentsPage from "../pages/Documents";
 import ReportsPage from "../pages/Reports";
@@ -12,6 +11,7 @@ import NotFoundPage from "../pages/NotFound";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
+import { ClientListPage } from "../features/clients/pages/ClientListPage";
 
 import {
   ProtectedRoute,
@@ -21,7 +21,6 @@ import {
 export default function AppRoutes() {
   return (
     <Routes>
-
       {/* Public Routes */}
 
       <Route element={<PublicRoute />}>
@@ -52,7 +51,7 @@ export default function AppRoutes() {
 
           <Route
             path="/clients"
-            element={<ClientsPage />}
+            element={<ClientListPage />}
           />
 
           <Route
@@ -81,7 +80,6 @@ export default function AppRoutes() {
         path="*"
         element={<NotFoundPage />}
       />
-
     </Routes>
   );
 }
