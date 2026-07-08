@@ -8,10 +8,16 @@ interface AppLayoutProps {
 
 function AppLayout({ children }: AppLayoutProps) {
   return (
-    <div>
+    <div className="flex h-screen bg-slate-100">
       <Sidebar />
-      <Header />
-      <main>{children}</main>
+
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <Header />
+
+        <main className="flex-1 overflow-y-auto p-8">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
