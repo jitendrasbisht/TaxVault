@@ -16,6 +16,5 @@ export * from "./Spinner";
 export * from "./StatusBadge";
 export * from "./Switch";
 export * from "./Tabs";
-export * from "./TextArea";
 export * from "./Toast";
 export * from "./Tooltip";

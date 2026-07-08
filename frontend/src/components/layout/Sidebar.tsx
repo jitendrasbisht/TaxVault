@@ -1,30 +1,42 @@
 import {
-  LayoutDashboard,
-  Users,
-  FolderOpen,
+  Briefcase,
   FileText,
+  FolderOpen,
+  LayoutDashboard,
   Settings,
+  Users,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const navigation = [
   {
     name: "Dashboard",
+    href: "/dashboard",
     icon: LayoutDashboard,
   },
   {
     name: "Clients",
+    href: "/clients",
     icon: Users,
   },
   {
+    name: "Cases",
+    href: "/cases",
+    icon: Briefcase,
+  },
+  {
     name: "Documents",
+    href: "/documents",
     icon: FolderOpen,
   },
   {
     name: "Reports",
+    href: "/reports",
     icon: FileText,
   },
   {
     name: "Settings",
+    href: "/settings",
     icon: Settings,
   },
 ];
@@ -34,9 +46,7 @@ function Sidebar() {
     <aside className="flex min-h-screen w-64 flex-col border-r border-slate-800 bg-slate-900 text-white">
       {/* Logo */}
       <div className="border-b border-slate-800 px-6 py-5">
-        <h1 className="text-2xl font-bold tracking-tight">
-          TaxVault
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight">TaxVault</h1>
 
         <p className="mt-1 text-sm text-slate-400">
           Tax Management Platform
@@ -46,22 +56,24 @@ function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 px-3 py-6">
         <ul className="space-y-2">
-          {navigation.map((item, index) => {
+          {navigation.map((item) => {
             const Icon = item.icon;
 
             return (
               <li key={item.name}>
-                <button
-                  className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition ${
-                    index === 0
-                      ? "bg-slate-800 text-white"
-                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                  }`}
+                <NavLink
+                  to={item.href}
+                  className={({ isActive }) =>
+                    `flex w-full items-center gap-3 rounded-lg px-4 py-3 transition ${
+                      isActive
+                        ? "bg-slate-800 text-white"
+                        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                    }`
+                  }
                 >
                   <Icon size={18} />
-
                   <span>{item.name}</span>
-                </button>
+                </NavLink>
               </li>
             );
           })}

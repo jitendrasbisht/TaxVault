@@ -1,12 +1,8 @@
-import type { ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
-interface AppLayoutProps {
-  children: ReactNode;
-}
-
-function AppLayout({ children }: AppLayoutProps) {
+function AppLayout() {
   return (
     <div className="flex h-screen bg-slate-100">
       <Sidebar />
@@ -15,7 +11,7 @@ function AppLayout({ children }: AppLayoutProps) {
         <Header />
 
         <main className="flex-1 overflow-y-auto p-8">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>
