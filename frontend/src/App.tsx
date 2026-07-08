@@ -1,10 +1,11 @@
+import { AppLayout } from "./components/layout";
+import Dashboard from "./pages/Dashboard";
+
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <h1 className="text-5xl font-bold text-blue-600">
-        TaxVault Dashboard
-      </h1>
-    </div>
+    <AppLayout>
+      <Dashboard />
+    </AppLayout>
   );
 }
 
