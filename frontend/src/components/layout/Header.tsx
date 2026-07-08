@@ -1,5 +1,4 @@
-import { Bell, LogOut, Settings, User } from "lucide-react";
-
+import { Bell } from "lucide-react";
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useAuth } from "@/features/auth";
 
@@ -23,7 +22,7 @@ function Header() {
           label={user?.name ?? "User"}
           items={[
             {
-              label: `${user?.email ?? ""}`,
+              label: user?.email ?? "",
               onClick: () => {},
             },
             {
