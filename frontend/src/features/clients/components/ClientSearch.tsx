@@ -1,21 +1,146 @@
+import { ArrowDownAZ, ArrowUpAZ, Search } from "lucide-react";
+
 import { Input } from "@/components/ui/Input";
+
+import { ClientStatus } from "../types/client";
+
+export type ClientSortField =
+  | "name"
+  | "email"
+  | "pan"
+  | "type"
+  | "status";
+
+export type ClientSortDirection = "asc" | "desc";
 
 interface ClientSearchProps {
   value: string;
-  onChange: (value: string) => void;
+  status: "all" | ClientStatus.ACTIVE | ClientStatus.INACTIVE;
+
+  sortBy: ClientSortField;
+  sortDirection: ClientSortDirection;
+
+  onSearchChange: (value: string) => void;
+  onStatusChange: (
+    value: "all" | ClientStatus.ACTIVE | ClientStatus.INACTIVE,
+  ) => void;
+
+  onSortByChange: (value: ClientSortField) => void;
+  onSortDirectionChange: (
+    value: ClientSortDirection,
+  ) => void;
 }
 
 export function ClientSearch({
   value,
-  onChange,
+  status,
+  sortBy,
+  sortDirection,
+  onSearchChange,
+  onStatusChange,
+  onSortByChange,
+  onSortDirectionChange,
 }: ClientSearchProps) {
   return (
-    <div className="max-w-md">
-      <Input
-        placeholder="Search by name, email or PAN..."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+    <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+      <div className="grid flex-1 gap-4 md:grid-cols-3">
+        <div className="md:col-span-2">
+          <label className="mb-2 block text-sm font-medium text-slate-600">
+            Search
+          </label>
+
+          <div className="relative">
+            <Search
+              size={18}
+              className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            />
+
+            <Input
+              className="pl-10"
+              placeholder="Search by Name, Email or PAN..."
+              value={value}
+              onChange={(e) =>
+                onSearchChange(e.target.value)
+              }
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-600">
+            Status
+          </label>
+
+          <select
+            value={status}
+            onChange={(e) =>
+              onStatusChange(
+                e.target.value as
+                  | "all"
+                  | ClientStatus.ACTIVE
+                  | ClientStatus.INACTIVE,
+              )
+            }
+            className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm transition focus:border-slate-500 focus:outline-none"
+          >
+            <option value="all">All Status</option>
+            <option value={ClientStatus.ACTIVE}>
+              Active
+            </option>
+            <option value={ClientStatus.INACTIVE}>
+              Inactive
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-end gap-3">
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-600">
+            Sort By
+          </label>
+
+          <select
+            value={sortBy}
+            onChange={(e) =>
+              onSortByChange(
+                e.target.value as ClientSortField,
+              )
+            }
+            className="h-10 min-w-[170px] rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm transition focus:border-slate-500 focus:outline-none"
+          >
+            <option value="name">Name</option>
+            <option value="email">Email</option>
+            <option value="pan">PAN</option>
+            <option value="type">Client Type</option>
+            <option value="status">Status</option>
+          </select>
+        </div>
+
+        <button
+          type="button"
+          onClick={() =>
+            onSortDirectionChange(
+              sortDirection === "asc"
+                ? "desc"
+                : "asc",
+            )
+          }
+          className="flex h-10 items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-medium shadow-sm transition hover:bg-slate-50"
+        >
+          {sortDirection === "asc" ? (
+            <>
+              <ArrowUpAZ size={18} />
+              Ascending
+            </>
+          ) : (
+            <>
+              <ArrowDownAZ size={18} />
+              Descending
+            </>
+          )}
+        </button>
+      </div>
     </div>
   );
 }

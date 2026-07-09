@@ -5,29 +5,72 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Skeleton } from "@/components/ui/Skeleton";
 
-import { ClientSearch } from "../components/ClientSearch";
+import {
+  ClientSearch,
+  ClientSortDirection,
+  ClientSortField,
+} from "../components/ClientSearch";
+import { ClientSummaryCards } from "../components/ClientSummaryCards";
 import { ClientTable } from "../components/ClientTable";
 import { useClients } from "../hooks/useClients";
+import { Client, ClientStatus } from "../types/client";
 
 export function ClientListPage() {
   const { clients, loading } = useClients();
+
   const [search, setSearch] = useState("");
+
+  const [status, setStatus] = useState<
+    "all" | ClientStatus.ACTIVE | ClientStatus.INACTIVE
+  >("all");
+
+  const [sortBy] =
+    useState<ClientSortField>("name");
+
+  const [sortDirection, setSortDirection] =
+    useState<ClientSortDirection>("asc");
 
   const filteredClients = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-    if (!query) {
-      return clients;
-    }
-
-    return clients.filter((client) => {
-      return (
+    const filtered = clients.filter((client) => {
+      const matchesSearch =
+        query === "" ||
         client.name.toLowerCase().includes(query) ||
         client.email.toLowerCase().includes(query) ||
-        client.pan.toLowerCase().includes(query)
-      );
+        client.pan.toLowerCase().includes(query);
+
+      const matchesStatus =
+        status === "all" || client.status === status;
+
+      return matchesSearch && matchesStatus;
     });
-  }, [clients, search]);
+
+    const sorted = [...filtered].sort(
+      (a: Client, b: Client) => {
+        const first = String(a[sortBy]).toLowerCase();
+        const second = String(b[sortBy]).toLowerCase();
+
+        if (first < second) {
+          return sortDirection === "asc" ? -1 : 1;
+        }
+
+        if (first > second) {
+          return sortDirection === "asc" ? 1 : -1;
+        }
+
+        return 0;
+      },
+    );
+
+    return sorted;
+  }, [
+    clients,
+    search,
+    status,
+    sortBy,
+    sortDirection,
+  ]);
 
   return (
     <div className="space-y-6">
@@ -36,33 +79,44 @@ export function ClientListPage() {
         description="Manage all your clients from one place."
       />
 
+      <ClientSummaryCards clients={clients} />
+
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
           <ClientSearch
             value={search}
-            onChange={setSearch}
+            status={status}
+            sortBy={sortBy}
+            sortDirection={sortDirection}
+            onSearchChange={setSearch}
+            onStatusChange={setStatus}
+            onSortByChange={() => {}}
+            onSortDirectionChange={setSortDirection}
           />
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-500">
+          <div className="flex items-center gap-5">
+            <span className="whitespace-nowrap text-sm font-medium text-slate-500">
               {filteredClients.length} Clients
             </span>
 
-            <Button>
-              Add Client
-            </Button>
+            <Button>Add Client</Button>
           </div>
         </div>
 
         {loading ? (
-          <Skeleton className="h-96 w-full rounded-xl" />
+          <Skeleton className="h-[520px] w-full rounded-xl" />
         ) : filteredClients.length === 0 ? (
           <EmptyState
             title="No Clients Found"
-            description="Try a different search term."
+            description="Try adjusting your search or filters."
           />
         ) : (
-          <ClientTable clients={filteredClients} />
+          <ClientTable
+            clients={filteredClients}
+            sortBy={sortBy}
+            sortDirection={sortDirection}
+            onSort={() => {}}
+          />
         )}
       </div>
     </div>
