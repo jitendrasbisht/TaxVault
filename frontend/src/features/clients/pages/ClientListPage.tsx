@@ -1,5 +1,4 @@
-import { useMemo, useState } from "react";
-import { v4 as uuid } from "uuid";
+import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -29,6 +28,11 @@ export function ClientListPage() {
 
   const [clientData, setClientData] =
     useState<Client[]>(clients);
+    useEffect(() => {
+  if (clients.length > 0) {
+    setClientData(clients);
+  }
+}, [clients]);
 
   const [search, setSearch] =
     useState("");
@@ -161,7 +165,7 @@ export function ClientListPage() {
       new Date().toISOString();
 
     const newClient: Client = {
-      id: uuid(),
+      id: crypto.randomUUID(),
       ...values,
       createdAt: now,
       updatedAt: now,
