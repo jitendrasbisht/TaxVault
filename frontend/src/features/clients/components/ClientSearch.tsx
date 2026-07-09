@@ -1,4 +1,8 @@
-import { ArrowDownAZ, ArrowUpAZ, Search } from "lucide-react";
+import {
+  ArrowDownAZ,
+  ArrowUpAZ,
+  Search,
+} from "lucide-react";
 
 import { Input } from "@/components/ui/Input";
 
@@ -11,21 +15,37 @@ export type ClientSortField =
   | "type"
   | "status";
 
-export type ClientSortDirection = "asc" | "desc";
+export type ClientSortDirection =
+  | "asc"
+  | "desc";
 
 interface ClientSearchProps {
   value: string;
-  status: "all" | ClientStatus.ACTIVE | ClientStatus.INACTIVE;
+
+  status:
+    | "all"
+    | ClientStatus.ACTIVE
+    | ClientStatus.INACTIVE;
 
   sortBy: ClientSortField;
+
   sortDirection: ClientSortDirection;
 
-  onSearchChange: (value: string) => void;
-  onStatusChange: (
-    value: "all" | ClientStatus.ACTIVE | ClientStatus.INACTIVE,
+  onSearchChange: (
+    value: string,
   ) => void;
 
-  onSortByChange: (value: ClientSortField) => void;
+  onStatusChange: (
+    value:
+      | "all"
+      | ClientStatus.ACTIVE
+      | ClientStatus.INACTIVE,
+  ) => void;
+
+  onSortByChange: (
+    value: ClientSortField,
+  ) => void;
+
   onSortDirectionChange: (
     value: ClientSortDirection,
   ) => void;
@@ -42,10 +62,10 @@ export function ClientSearch({
   onSortDirectionChange,
 }: ClientSearchProps) {
   return (
-    <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+    <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
       <div className="grid flex-1 gap-4 md:grid-cols-3">
         <div className="md:col-span-2">
-          <label className="mb-2 block text-sm font-medium text-slate-600">
+          <label className="mb-2 block text-sm font-medium text-slate-700">
             Search
           </label>
 
@@ -59,23 +79,25 @@ export function ClientSearch({
               className="pl-10"
               placeholder="Search by Name, Email or PAN..."
               value={value}
-              onChange={(e) =>
-                onSearchChange(e.target.value)
+              onChange={(event) =>
+                onSearchChange(
+                  event.target.value,
+                )
               }
             />
           </div>
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-600">
+          <label className="mb-2 block text-sm font-medium text-slate-700">
             Status
           </label>
 
           <select
             value={status}
-            onChange={(e) =>
+            onChange={(event) =>
               onStatusChange(
-                e.target.value as
+                event.target.value as
                   | "all"
                   | ClientStatus.ACTIVE
                   | ClientStatus.INACTIVE,
@@ -83,37 +105,60 @@ export function ClientSearch({
             }
             className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm transition focus:border-slate-500 focus:outline-none"
           >
-            <option value="all">All Status</option>
-            <option value={ClientStatus.ACTIVE}>
+            <option value="all">
+              All Status
+            </option>
+
+            <option
+              value={ClientStatus.ACTIVE}
+            >
               Active
             </option>
-            <option value={ClientStatus.INACTIVE}>
+
+            <option
+              value={ClientStatus.INACTIVE}
+            >
               Inactive
             </option>
           </select>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-end gap-3">
+      <div className="flex flex-wrap items-end gap-4">
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-600">
+          <label className="mb-2 block text-sm font-medium text-slate-700">
             Sort By
           </label>
 
           <select
             value={sortBy}
-            onChange={(e) =>
+            onChange={(event) =>
               onSortByChange(
-                e.target.value as ClientSortField,
+                event.target
+                  .value as ClientSortField,
               )
             }
-            className="h-10 min-w-[170px] rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm transition focus:border-slate-500 focus:outline-none"
+            className="h-10 min-w-[180px] rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm transition focus:border-slate-500 focus:outline-none"
           >
-            <option value="name">Name</option>
-            <option value="email">Email</option>
-            <option value="pan">PAN</option>
-            <option value="type">Client Type</option>
-            <option value="status">Status</option>
+            <option value="name">
+              Name
+            </option>
+
+            <option value="email">
+              Email
+            </option>
+
+            <option value="pan">
+              PAN
+            </option>
+
+            <option value="type">
+              Client Type
+            </option>
+
+            <option value="status">
+              Status
+            </option>
           </select>
         </div>
 
@@ -135,7 +180,9 @@ export function ClientSearch({
             </>
           ) : (
             <>
-              <ArrowDownAZ size={18} />
+              <ArrowDownAZ
+                size={18}
+              />
               Descending
             </>
           )}
