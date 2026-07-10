@@ -1,4 +1,8 @@
-import { Document, DocumentCategory, DocumentStatus } from "../types/document";
+import {
+  Document,
+  DocumentCategory,
+  DocumentStatus,
+} from "../types/document";
 
 export const mockDocuments: Document[] = [
   {
