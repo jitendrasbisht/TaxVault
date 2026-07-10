@@ -1,61 +1,114 @@
+import {
+  CheckCircle2,
+  Clock3,
+  Upload,
+} from "lucide-react";
+
 import { Document } from "../types/document";
 
-interface DocumentActivityTimelineProps {
+interface Props {
   document: Document;
 }
 
 export default function DocumentActivityTimeline({
   document,
-}: DocumentActivityTimelineProps) {
+}: Props) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="mb-5 text-lg font-semibold text-slate-900">
+
+      <h2 className="mb-6 text-lg font-semibold">
         Activity Timeline
       </h2>
 
-      <div className="space-y-5">
+      <div className="space-y-6">
 
-        <TimelineItem
-          title="Document Uploaded"
-          value={document.uploadedBy}
-          date={document.uploadedAt}
+        <TimelineRow
+          icon={
+            <Upload
+              size={18}
+            />
+          }
+          title="Uploaded"
+          subtitle={
+            document.uploadedBy
+          }
+          date={
+            document.uploadedAt
+          }
         />
 
-        <TimelineItem
-          title="Last Updated"
-          value={document.uploadedBy}
-          date={document.updatedAt}
+        <TimelineRow
+          icon={
+            <Clock3
+              size={18}
+            />
+          }
+          title="Updated"
+          subtitle={
+            document.uploadedBy
+          }
+          date={
+            document.updatedAt
+          }
+        />
+
+        <TimelineRow
+          icon={
+            <CheckCircle2
+              size={18}
+            />
+          }
+          title="Current Version"
+          subtitle={`v${document.version}`}
+          date={
+            document.updatedAt
+          }
         />
 
       </div>
+
     </div>
   );
 }
 
-interface TimelineItemProps {
+interface TimelineRowProps {
+  icon: React.ReactNode;
   title: string;
-  value: string;
+  subtitle: string;
   date: string;
 }
 
-function TimelineItem({
+function TimelineRow({
+  icon,
   title,
-  value,
+  subtitle,
   date,
-}: TimelineItemProps) {
+}: TimelineRowProps) {
   return (
-    <div className="border-l-2 border-blue-500 pl-4">
-      <p className="font-medium">
-        {title}
-      </p>
+    <div className="flex gap-4">
 
-      <p className="text-sm text-slate-600">
-        {value}
-      </p>
+      <div className="mt-1 rounded-full bg-slate-100 p-2">
+        {icon}
+      </div>
 
-      <p className="text-xs text-slate-400">
-        {new Date(date).toLocaleString()}
-      </p>
+      <div>
+
+        <p className="font-medium">
+          {title}
+        </p>
+
+        <p className="text-sm text-slate-500">
+          {subtitle}
+        </p>
+
+        <p className="text-xs text-slate-400">
+          {new Date(
+            date,
+          ).toLocaleString()}
+        </p>
+
+      </div>
+
     </div>
   );
 }
