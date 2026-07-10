@@ -9,6 +9,7 @@ import DocumentOwnerCard from "../components/DocumentOwnerCard";
 import DocumentDescriptionCard from "../components/DocumentDescriptionCard";
 import DocumentVersionHistory from "../components/DocumentVersionHistory";
 import DocumentActivityTimeline from "../components/DocumentActivityTimeline";
+import DocumentPreviewPanel from "../components/DocumentPreviewPanel";
 
 export function DocumentDetailsPage() {
   const { id } = useParams();
@@ -51,6 +52,10 @@ export function DocumentDetailsPage() {
         description={
           document.description
         }
+      />
+
+      <DocumentPreviewPanel
+        fileName={document.name}
       />
 
       <div className="grid gap-6 lg:grid-cols-2">
