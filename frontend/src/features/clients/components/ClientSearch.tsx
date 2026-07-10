@@ -62,9 +62,10 @@ export function ClientSearch({
   onSortDirectionChange,
 }: ClientSearchProps) {
   return (
-    <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
-      <div className="grid flex-1 gap-4 md:grid-cols-3">
-        <div className="md:col-span-2">
+    <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+      <div className="grid flex-1 gap-5 lg:grid-cols-5">
+
+        <div className="lg:col-span-3">
           <label className="mb-2 block text-sm font-medium text-slate-700">
             Search
           </label>
@@ -77,7 +78,7 @@ export function ClientSearch({
 
             <Input
               className="pl-10"
-              placeholder="Search by Name, Email or PAN..."
+              placeholder="Search clients by name, email or PAN..."
               value={value}
               onChange={(event) =>
                 onSearchChange(
@@ -122,9 +123,7 @@ export function ClientSearch({
             </option>
           </select>
         </div>
-      </div>
 
-      <div className="flex flex-wrap items-end gap-4">
         <div>
           <label className="mb-2 block text-sm font-medium text-slate-700">
             Sort By
@@ -138,7 +137,7 @@ export function ClientSearch({
                   .value as ClientSortField,
               )
             }
-            className="h-10 min-w-[180px] rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm transition focus:border-slate-500 focus:outline-none"
+            className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm shadow-sm transition focus:border-slate-500 focus:outline-none"
           >
             <option value="name">
               Name
@@ -162,32 +161,31 @@ export function ClientSearch({
           </select>
         </div>
 
-        <button
-          type="button"
-          onClick={() =>
-            onSortDirectionChange(
-              sortDirection === "asc"
-                ? "desc"
-                : "asc",
-            )
-          }
-          className="flex h-10 items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-medium shadow-sm transition hover:bg-slate-50"
-        >
-          {sortDirection === "asc" ? (
-            <>
-              <ArrowUpAZ size={18} />
-              Ascending
-            </>
-          ) : (
-            <>
-              <ArrowDownAZ
-                size={18}
-              />
-              Descending
-            </>
-          )}
-        </button>
       </div>
+
+      <button
+        type="button"
+        onClick={() =>
+          onSortDirectionChange(
+            sortDirection === "asc"
+              ? "desc"
+              : "asc",
+          )
+        }
+        className="flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 text-sm font-medium shadow-sm transition hover:bg-slate-50"
+      >
+        {sortDirection === "asc" ? (
+          <>
+            <ArrowUpAZ size={18} />
+            Ascending
+          </>
+        ) : (
+          <>
+            <ArrowDownAZ size={18} />
+            Descending
+          </>
+        )}
+      </button>
     </div>
   );
 }

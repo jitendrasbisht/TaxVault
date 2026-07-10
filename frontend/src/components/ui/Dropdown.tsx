@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MoreVertical } from "lucide-react";
 
 interface DropdownItem {
   label: string;
@@ -7,13 +7,13 @@ interface DropdownItem {
 }
 
 interface DropdownProps {
-  label: string;
   items: DropdownItem[];
+  label?: string;
 }
 
 export function Dropdown({
-  label,
   items,
+  label,
 }: DropdownProps) {
   const [open, setOpen] = useState(false);
 
@@ -41,32 +41,44 @@ export function Dropdown({
   return (
     <div
       ref={ref}
-      className="relative"
+      className="relative inline-flex"
     >
       <button
-        onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm hover:bg-slate-50"
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        className={
+          label
+            ? "flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium shadow-sm transition hover:bg-slate-50"
+            : "rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+        }
       >
-        {label}
+        {label ? (
+          <>
+            {label}
 
-        <ChevronDown
-          size={16}
-          className={`transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
-        />
+            <ChevronDown
+              size={16}
+              className={`transition-transform ${
+                open ? "rotate-180" : ""
+              }`}
+            />
+          </>
+        ) : (
+          <MoreVertical size={18} />
+        )}
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
+        <div className="absolute right-0 top-full z-50 mt-2 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl">
           {items.map((item) => (
             <button
               key={item.label}
+              type="button"
               onClick={() => {
                 item.onClick();
                 setOpen(false);
               }}
-              className="block w-full px-4 py-3 text-left text-sm transition hover:bg-slate-100"
+              className="block w-full px-4 py-2.5 text-left text-sm text-slate-700 transition hover:bg-slate-100"
             >
               {item.label}
             </button>

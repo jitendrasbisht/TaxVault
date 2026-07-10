@@ -198,7 +198,6 @@ export function ClientTable({
 
                 <td className="px-6 py-4 text-right">
                   <Dropdown
-                    label="Actions"
                     items={[
                       {
                         label: "Edit",
