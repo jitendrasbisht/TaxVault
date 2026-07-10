@@ -3,6 +3,7 @@ import {
   ArrowUp,
   ArrowUpDown,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { Dropdown } from "@/components/ui/Dropdown";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -22,7 +23,6 @@ interface ClientTableProps {
   sortBy: ClientSortField;
   sortDirection: ClientSortDirection;
   onSort: (field: ClientSortField) => void;
-
   onEdit: (client: Client) => void;
   onDelete: (client: Client) => void;
 }
@@ -33,13 +33,10 @@ function getStatusVariant(
   switch (status) {
     case ClientStatus.ACTIVE:
       return "success";
-
     case ClientStatus.INACTIVE:
       return "warning";
-
     case ClientStatus.ARCHIVED:
       return "danger";
-
     default:
       return "warning";
   }
@@ -166,8 +163,13 @@ export function ClientTable({
                 key={client.id}
                 className="border-b border-slate-100 transition hover:bg-slate-50"
               >
-                <td className="px-6 py-4 font-semibold text-slate-900">
-                  {client.name}
+                <td className="px-6 py-4">
+                  <Link
+                    to={`/clients/${client.id}`}
+                    className="font-semibold text-slate-900 transition hover:text-blue-600 hover:underline"
+                  >
+                    {client.name}
+                  </Link>
                 </td>
 
                 <td className="px-6 py-4 text-slate-600">
@@ -199,6 +201,12 @@ export function ClientTable({
                 <td className="px-6 py-4 text-right">
                   <Dropdown
                     items={[
+                      {
+                        label: "View",
+                        onClick: () => {
+                          window.location.href = `/clients/${client.id}`;
+                        },
+                      },
                       {
                         label: "Edit",
                         onClick: () =>
