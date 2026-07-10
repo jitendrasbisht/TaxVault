@@ -67,8 +67,11 @@ class MockDocumentService
 
     const document: Document = {
       id: crypto.randomUUID(),
+
       ...payload,
+
       uploadedAt: now,
+
       updatedAt: now,
     };
 
@@ -97,12 +100,15 @@ class MockDocumentService
 
     const updated: Document = {
       ...this.documents[index],
+
       ...payload,
+
       updatedAt:
         new Date().toISOString(),
     };
 
-    this.documents[index] = updated;
+    this.documents[index] =
+      updated;
 
     return updated;
   }

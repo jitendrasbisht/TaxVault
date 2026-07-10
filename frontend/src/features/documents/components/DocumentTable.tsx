@@ -8,8 +8,6 @@ import { Button } from "@/components/ui/Button";
 
 import { Document } from "../types/document";
 
-import { DocumentStatusBadge } from "./DocumentStatusBadge";
-
 interface DocumentTableProps {
   documents: Document[];
 
@@ -29,7 +27,6 @@ export function DocumentTable({
 }: DocumentTableProps) {
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200">
-
       <table className="min-w-full divide-y divide-slate-200">
 
         <thead className="bg-slate-50">
@@ -73,7 +70,6 @@ export function DocumentTable({
                 className="hover:bg-slate-50"
               >
                 <td className="px-4 py-4">
-
                   <div className="font-medium">
                     {document.name}
                   </div>
@@ -81,7 +77,6 @@ export function DocumentTable({
                   <div className="text-xs text-slate-500">
                     {document.fileType}
                   </div>
-
                 </td>
 
                 <td className="px-4 py-4">
@@ -93,11 +88,7 @@ export function DocumentTable({
                 </td>
 
                 <td className="px-4 py-4">
-                  <DocumentStatusBadge
-                    status={
-                      document.status
-                    }
-                  />
+                  {document.status}
                 </td>
 
                 <td className="px-4 py-4">
@@ -105,7 +96,6 @@ export function DocumentTable({
                 </td>
 
                 <td className="px-4 py-4">
-
                   <div className="flex justify-end gap-2">
 
                     <Button
@@ -124,9 +114,7 @@ export function DocumentTable({
                         )
                       }
                     >
-                      <Edit
-                        size={16}
-                      />
+                      <Edit size={16} />
                     </Button>
 
                     <Button
@@ -144,7 +132,6 @@ export function DocumentTable({
                     </Button>
 
                   </div>
-
                 </td>
 
               </tr>
@@ -154,7 +141,8 @@ export function DocumentTable({
         </tbody>
 
       </table>
-
     </div>
   );
 }
+
+export default DocumentTable;

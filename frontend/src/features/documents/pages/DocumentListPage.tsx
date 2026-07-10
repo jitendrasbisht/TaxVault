@@ -5,25 +5,29 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Pagination } from "@/components/ui/Pagination";
 import { Skeleton } from "@/components/ui/Skeleton";
 
+import DeleteConfirmationModal from "@/features/clients/components/DeleteConfirmationModal";
+
+import AddDocumentModal from "../components/AddDocumentModal";
 import { DocumentSummaryCards } from "../components/DocumentSummaryCards";
 import { DocumentTable } from "../components/DocumentTable";
 import { DocumentToolbar } from "../components/DocumentToolbar";
-import AddDocumentModal from "../components/AddDocumentModal";
 import EditDocumentModal from "../components/EditDocumentModal";
 
 import { useDocuments } from "../hooks/useDocuments";
 
-import { documentService } from "../services/mockDocument.service";
+import {
+  documentService,
+} from "../services/mockDocument.service";
+
+import {
+  DocumentFormValues,
+} from "../schema/document.schema";
 
 import {
   Document,
   DocumentCategory,
   DocumentStatus,
 } from "../types/document";
-
-import {
-  DocumentFormValues,
-} from "../schema/document.schema";
 
 const PAGE_SIZE = 10;
 
@@ -60,6 +64,11 @@ export function DocumentListPage() {
   const [
     editingDocument,
     setEditingDocument,
+  ] = useState<Document | null>(null);
+
+  const [
+    deletingDocument,
+    setDeletingDocument,
   ] = useState<Document | null>(null);
 
   useEffect(() => {
@@ -102,6 +111,20 @@ export function DocumentListPage() {
     await refreshDocuments();
 
     setEditingDocument(null);
+  }
+
+  async function handleDeleteDocument() {
+    if (!deletingDocument) {
+      return;
+    }
+
+    await documentService.deleteDocument(
+      deletingDocument.id,
+    );
+
+    await refreshDocuments();
+
+    setDeletingDocument(null);
   }
 
   const filteredDocuments =
@@ -170,7 +193,6 @@ export function DocumentListPage() {
 
   return (
     <div className="space-y-6">
-
       <PageHeader
         title="Document Vault"
         description="Manage all client documents."
@@ -197,7 +219,7 @@ export function DocumentListPage() {
             filteredDocuments.length
           }
         />
-        {loading ? (
+                  {loading ? (
           <Skeleton className="h-[520px] w-full rounded-xl" />
         ) : filteredDocuments.length === 0 ? (
           <EmptyState
@@ -207,21 +229,17 @@ export function DocumentListPage() {
         ) : (
           <>
             <DocumentTable
-              documents={
-                paginatedDocuments
-              }
+              documents={paginatedDocuments}
+              onEdit={setEditingDocument}
+              onDelete={setDeletingDocument}
             />
 
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              totalItems={
-                filteredDocuments.length
-              }
+              totalItems={filteredDocuments.length}
               pageSize={PAGE_SIZE}
-              onPageChange={
-                setCurrentPage
-              }
+              onPageChange={setCurrentPage}
             />
           </>
         )}
@@ -234,24 +252,30 @@ export function DocumentListPage() {
         onClose={() =>
           setIsAddDocumentOpen(false)
         }
-        onSubmit={
-          handleCreateDocument
-        }
+        onSubmit={handleCreateDocument}
       />
 
       <EditDocumentModal
-        open={
-          editingDocument !== null
-        }
-        document={
-          editingDocument
-        }
+        open={editingDocument !== null}
+        document={editingDocument}
         onClose={() =>
           setEditingDocument(null)
         }
-        onSubmit={
-          handleUpdateDocument
+        onSubmit={handleUpdateDocument}
+      />
+
+      <DeleteConfirmationModal
+        open={deletingDocument !== null}
+        title="Delete Document"
+        message={
+          deletingDocument
+            ? `Are you sure you want to delete "${deletingDocument.name}"? This action cannot be undone.`
+            : ""
         }
+        onClose={() =>
+          setDeletingDocument(null)
+        }
+        onConfirm={handleDeleteDocument}
       />
     </div>
   );
