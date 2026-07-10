@@ -4,6 +4,12 @@ import { PageHeader } from "@/components/ui/PageHeader";
 
 import { useDocuments } from "../hooks/useDocuments";
 
+import DocumentMetadataCard from "../components/DocumentMetadataCard";
+import DocumentOwnerCard from "../components/DocumentOwnerCard";
+import DocumentDescriptionCard from "../components/DocumentDescriptionCard";
+import DocumentVersionHistory from "../components/DocumentVersionHistory";
+import DocumentActivityTimeline from "../components/DocumentActivityTimeline";
+
 export function DocumentDetailsPage() {
   const { id } = useParams();
 
@@ -23,63 +29,42 @@ export function DocumentDetailsPage() {
 
   return (
     <div className="space-y-6">
+
       <PageHeader
         title={document.name}
         description={document.clientName}
       />
 
-      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="grid gap-6 lg:grid-cols-2">
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <DocumentMetadataCard
+          document={document}
+        />
 
-          <div>
-            <h3 className="mb-2 font-semibold">
-              Category
-            </h3>
-
-            <p>{document.category}</p>
-          </div>
-
-          <div>
-            <h3 className="mb-2 font-semibold">
-              Status
-            </h3>
-
-            <p>{document.status}</p>
-          </div>
-
-          <div>
-            <h3 className="mb-2 font-semibold">
-              Version
-            </h3>
-
-            <p>v{document.version}</p>
-          </div>
-
-          <div>
-            <h3 className="mb-2 font-semibold">
-              Uploaded By
-            </h3>
-
-            <p>{document.uploadedBy}</p>
-          </div>
-
-        </div>
-
-        <div className="mt-8">
-
-          <h3 className="mb-2 font-semibold">
-            Description
-          </h3>
-
-          <p className="text-slate-600">
-            {document.description ||
-              "No description available."}
-          </p>
-
-        </div>
+        <DocumentOwnerCard
+          document={document}
+        />
 
       </div>
+
+      <DocumentDescriptionCard
+        description={
+          document.description
+        }
+      />
+
+      <div className="grid gap-6 lg:grid-cols-2">
+
+        <DocumentVersionHistory
+          document={document}
+        />
+
+        <DocumentActivityTimeline
+          document={document}
+        />
+
+      </div>
+
     </div>
   );
 }

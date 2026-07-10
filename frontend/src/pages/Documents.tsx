@@ -1,5 +1,5 @@
-import { DocumentListPage } from "@/features/documents/pages/DocumentListPage";
+import { DocumentListPage } from "@/features/documents";
 
-export default function Documents() {
+export default function DocumentsPage() {
   return <DocumentListPage />;
 }
