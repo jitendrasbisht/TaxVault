@@ -6,19 +6,26 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { Pagination } from "@/components/ui/Pagination";
 import { Skeleton } from "@/components/ui/Skeleton";
 
+import { AddClientModal } from "../components/AddClientModal";
+import { ClientSearch } from "../components/ClientSearch";
 import {
-  ClientSearch,
   ClientSortDirection,
   ClientSortField,
 } from "../components/ClientSearch";
-import { AddClientModal } from "../components/AddClientModal";
 import { ClientSummaryCards } from "../components/ClientSummaryCards";
 import { ClientTable } from "../components/ClientTable";
+import DeleteConfirmationModal from "../components/DeleteConfirmationModal";
+import EditClientModal from "../components/EditClientModal";
+
+import { clientService } from "../services/mockClient.service";
+
 import { useClients } from "../hooks/useClients";
+
 import {
   Client,
   ClientStatus,
 } from "../types/client";
+
 import { ClientFormValues } from "../schema/client.schema";
 
 const PAGE_SIZE = 10;
@@ -27,12 +34,7 @@ export function ClientListPage() {
   const { clients, loading } = useClients();
 
   const [clientData, setClientData] =
-    useState<Client[]>(clients);
-    useEffect(() => {
-  if (clients.length > 0) {
-    setClientData(clients);
-  }
-}, [clients]);
+    useState<Client[]>([]);
 
   const [search, setSearch] =
     useState("");
@@ -55,6 +57,66 @@ export function ClientListPage() {
 
   const [isAddClientOpen, setIsAddClientOpen] =
     useState(false);
+
+  const [editingClient, setEditingClient] =
+    useState<Client | null>(null);
+
+  const [deletingClient, setDeletingClient] =
+    useState<Client | null>(null);
+
+  useEffect(() => {
+    setClientData(clients);
+  }, [clients]);
+
+  async function refreshClients() {
+    const data =
+      await clientService.getClients();
+
+    setClientData(data);
+  }
+
+  async function handleCreateClient(
+    values: ClientFormValues,
+  ) {
+    await clientService.createClient(values);
+
+    await refreshClients();
+
+    setCurrentPage(1);
+
+    setIsAddClientOpen(false);
+  }
+
+  async function handleUpdateClient(
+    values: ClientFormValues,
+  ) {
+    if (!editingClient) {
+      return;
+    }
+
+    await clientService.updateClient(
+      editingClient.id,
+      values,
+    );
+
+    await refreshClients();
+
+    setEditingClient(null);
+  }
+
+  async function handleDeleteClient() {
+    if (!deletingClient) {
+      return;
+    }
+
+    await clientService.deleteClient(
+      deletingClient.id,
+    );
+
+    await refreshClients();
+
+    setDeletingClient(null);
+  }
 
   const filteredClients = useMemo(() => {
     const query = search
@@ -158,28 +220,6 @@ export function ClientListPage() {
     setSortDirection("asc");
   }
 
-  function handleCreateClient(
-    values: ClientFormValues,
-  ) {
-    const now =
-      new Date().toISOString();
-
-    const newClient: Client = {
-      id: crypto.randomUUID(),
-      ...values,
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    setClientData((current) => [
-      newClient,
-      ...current,
-    ]);
-
-    setCurrentPage(1);
-    setIsAddClientOpen(false);
-  }
-
   return (
     <div className="space-y-6">
       <PageHeader
@@ -192,44 +232,44 @@ export function ClientListPage() {
       />
 
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+
         <div className="mb-6 flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+
           <ClientSearch
             value={search}
             status={status}
             sortBy={sortBy}
-            sortDirection={
-              sortDirection
-            }
-            onSearchChange={
-              setSearch
-            }
-            onStatusChange={
-              setStatus
-            }
-            onSortByChange={
-              setSortBy
-            }
-            onSortDirectionChange={
-              setSortDirection
-            }
+            sortDirection={sortDirection}
+            onSearchChange={setSearch}
+            onStatusChange={setStatus}
+            onSortByChange={setSortBy}
+            onSortDirectionChange={setSortDirection}
           />
 
           <div className="flex items-center gap-5">
+
             <span className="whitespace-nowrap text-sm font-medium text-slate-500">
-              {filteredClients.length}
-              {" "}Clients
+              Showing{" "}
+              <span className="font-semibold text-slate-900">
+                {paginatedClients.length}
+              </span>{" "}
+              of{" "}
+              <span className="font-semibold text-slate-900">
+                {filteredClients.length}
+              </span>{" "}
+              Clients
             </span>
 
             <Button
               onClick={() =>
-                setIsAddClientOpen(
-                  true,
-                )
+                setIsAddClientOpen(true)
               }
             >
               Add Client
             </Button>
+
           </div>
+
         </div>
                 {loading ? (
           <Skeleton className="h-[520px] w-full rounded-xl" />
@@ -245,6 +285,8 @@ export function ClientListPage() {
               sortBy={sortBy}
               sortDirection={sortDirection}
               onSort={handleSort}
+              onEdit={setEditingClient}
+              onDelete={setDeletingClient}
             />
 
             <Pagination
@@ -267,7 +309,30 @@ export function ClientListPage() {
         }
         onSubmit={handleCreateClient}
       />
-    </div>
+
+      <EditClientModal
+        open={editingClient !== null}
+        client={editingClient}
+        onClose={() =>
+          setEditingClient(null)
+        }
+        onSubmit={handleUpdateClient}
+      />
+
+      <DeleteConfirmationModal
+        open={deletingClient !== null}
+        title="Delete Client"
+        message={
+          deletingClient
+            ? `Are you sure you want to delete "${deletingClient.name}"? This action cannot be undone.`
+            : ""
+        }
+        onClose={() =>
+          setDeletingClient(null)
+        }
+        onConfirm={handleDeleteClient}
+      />
+          </div>
   );
 }
 

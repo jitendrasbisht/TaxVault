@@ -4,12 +4,14 @@ import {
   ArrowUpDown,
 } from "lucide-react";
 
+import { Dropdown } from "@/components/ui/Dropdown";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 
 import {
   Client,
   ClientStatus,
 } from "../types/client";
+
 import {
   ClientSortDirection,
   ClientSortField,
@@ -20,6 +22,9 @@ interface ClientTableProps {
   sortBy: ClientSortField;
   sortDirection: ClientSortDirection;
   onSort: (field: ClientSortField) => void;
+
+  onEdit: (client: Client) => void;
+  onDelete: (client: Client) => void;
 }
 
 function getStatusVariant(
@@ -96,6 +101,8 @@ export function ClientTable({
   sortBy,
   sortDirection,
   onSort,
+  onEdit,
+  onDelete,
 }: ClientTableProps) {
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -146,6 +153,10 @@ export function ClientTable({
                 sortDirection={sortDirection}
                 onSort={onSort}
               />
+
+              <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Actions
+              </th>
             </tr>
           </thead>
 
@@ -153,7 +164,7 @@ export function ClientTable({
             {clients.map((client) => (
               <tr
                 key={client.id}
-                className="cursor-pointer border-b border-slate-100 transition hover:bg-slate-50"
+                className="border-b border-slate-100 transition hover:bg-slate-50"
               >
                 <td className="px-6 py-4 font-semibold text-slate-900">
                   {client.name}
@@ -184,6 +195,24 @@ export function ClientTable({
                     {formatValue(client.status)}
                   </StatusBadge>
                 </td>
+
+                <td className="px-6 py-4 text-right">
+                  <Dropdown
+                    label="Actions"
+                    items={[
+                      {
+                        label: "Edit",
+                        onClick: () =>
+                          onEdit(client),
+                      },
+                      {
+                        label: "Delete",
+                        onClick: () =>
+                          onDelete(client),
+                      },
+                    ]}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
@@ -192,3 +221,5 @@ export function ClientTable({
     </div>
   );
 }
+
+export default ClientTable;
