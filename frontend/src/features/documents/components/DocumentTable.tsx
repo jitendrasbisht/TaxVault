@@ -3,6 +3,7 @@ import {
   Eye,
   Trash2,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/Button";
 
@@ -25,8 +26,12 @@ export function DocumentTable({
   onEdit,
   onDelete,
 }: DocumentTableProps) {
+  const navigate =
+    useNavigate();
+
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200">
+
       <table className="min-w-full divide-y divide-slate-200">
 
         <thead className="bg-slate-50">
@@ -96,11 +101,17 @@ export function DocumentTable({
                 </td>
 
                 <td className="px-4 py-4">
+
                   <div className="flex justify-end gap-2">
 
                     <Button
                       size="sm"
                       variant="outline"
+                      onClick={() =>
+                        navigate(
+                          `/documents/${document.id}`,
+                        )
+                      }
                     >
                       <Eye size={16} />
                     </Button>
@@ -126,12 +137,11 @@ export function DocumentTable({
                         )
                       }
                     >
-                      <Trash2
-                        size={16}
-                      />
+                      <Trash2 size={16} />
                     </Button>
 
                   </div>
+
                 </td>
 
               </tr>
@@ -141,6 +151,7 @@ export function DocumentTable({
         </tbody>
 
       </table>
+
     </div>
   );
 }

@@ -16,6 +16,10 @@ import { ClientListPage } from "../features/clients/pages/ClientListPage";
 import ClientDetailsPage from "../features/clients/pages/ClientDetailsPage";
 
 import {
+  DocumentDetailsPage,
+} from "../features/documents";
+
+import {
   ProtectedRoute,
   PublicRoute,
 } from "../features/auth";
@@ -39,6 +43,7 @@ export default function AppRoutes() {
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
+
           <Route
             index
             element={
@@ -75,6 +80,11 @@ export default function AppRoutes() {
           />
 
           <Route
+            path="/documents/:id"
+            element={<DocumentDetailsPage />}
+          />
+
+          <Route
             path="/reports"
             element={<ReportsPage />}
           />
@@ -83,6 +93,7 @@ export default function AppRoutes() {
             path="/settings"
             element={<SettingsPage />}
           />
+
         </Route>
       </Route>
 
