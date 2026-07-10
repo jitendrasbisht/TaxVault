@@ -1,27 +1,54 @@
-import { Input } from "@/components/ui/Input";
+import {
+  DocumentCategory,
+  DocumentStatus,
+} from "../types/document";
+
+import { DocumentFilters } from "./DocumentFilters";
 
 interface Props {
   value: string;
+  category:
+    | "all"
+    | DocumentCategory;
+
+  status:
+    | "all"
+    | DocumentStatus;
+
   onSearchChange: (
     value: string,
   ) => void;
+
+  onCategoryChange: (
+    value:
+      | "all"
+      | DocumentCategory,
+  ) => void;
+
+  onStatusChange: (
+    value:
+      | "all"
+      | DocumentStatus,
+  ) => void;
 }
 
-export function DocumentSearch({
-  value,
-  onSearchChange,
-}: Props) {
+export function DocumentSearch(
+  props: Props,
+) {
   return (
-    <div className="w-full max-w-md">
-      <Input
-        placeholder="Search documents..."
-        value={value}
-        onChange={(event) =>
-          onSearchChange(
-            event.target.value,
-          )
-        }
-      />
-    </div>
+    <DocumentFilters
+      search={props.value}
+      category={props.category}
+      status={props.status}
+      onSearchChange={
+        props.onSearchChange
+      }
+      onCategoryChange={
+        props.onCategoryChange
+      }
+      onStatusChange={
+        props.onStatusChange
+      }
+    />
   );
 }

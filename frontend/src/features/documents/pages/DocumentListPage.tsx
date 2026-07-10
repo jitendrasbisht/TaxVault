@@ -10,6 +10,11 @@ import { DocumentTable } from "../components/DocumentTable";
 
 import { useDocuments } from "../hooks/useDocuments";
 
+import {
+  DocumentCategory,
+  DocumentStatus,
+} from "../types/document";
+
 export function DocumentListPage() {
   const { documents, loading } =
     useDocuments();
@@ -17,26 +22,58 @@ export function DocumentListPage() {
   const [search, setSearch] =
     useState("");
 
+  const [category, setCategory] =
+    useState<
+      | "all"
+      | DocumentCategory
+    >("all");
+
+  const [status, setStatus] =
+    useState<
+      | "all"
+      | DocumentStatus
+    >("all");
+
   const filteredDocuments =
     useMemo(() => {
       const query = search
         .trim()
         .toLowerCase();
 
-      if (!query) {
-        return documents;
-      }
-
       return documents.filter(
-        (document) =>
-          document.name
-            .toLowerCase()
-            .includes(query) ||
-          document.clientName
-            .toLowerCase()
-            .includes(query),
+        (document) => {
+          const matchesSearch =
+            query === "" ||
+            document.name
+              .toLowerCase()
+              .includes(query) ||
+            document.clientName
+              .toLowerCase()
+              .includes(query);
+
+          const matchesCategory =
+            category === "all" ||
+            document.category ===
+              category;
+
+          const matchesStatus =
+            status === "all" ||
+            document.status ===
+              status;
+
+          return (
+            matchesSearch &&
+            matchesCategory &&
+            matchesStatus
+          );
+        },
       );
-    }, [documents, search]);
+    }, [
+      documents,
+      search,
+      category,
+      status,
+    ]);
 
   return (
     <div className="space-y-6">
@@ -53,8 +90,16 @@ export function DocumentListPage() {
         <div className="mb-6">
           <DocumentSearch
             value={search}
+            category={category}
+            status={status}
             onSearchChange={
               setSearch
+            }
+            onCategoryChange={
+              setCategory
+            }
+            onStatusChange={
+              setStatus
             }
           />
         </div>
@@ -65,7 +110,7 @@ export function DocumentListPage() {
           0 ? (
           <EmptyState
             title="No Documents Found"
-            description="Try adjusting your search."
+            description="Try adjusting your search or filters."
           />
         ) : (
           <DocumentTable
