@@ -4,9 +4,9 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Skeleton } from "@/components/ui/Skeleton";
 
-import { DocumentSearch } from "../components/DocumentSearch";
 import { DocumentSummaryCards } from "../components/DocumentSummaryCards";
 import { DocumentTable } from "../components/DocumentTable";
+import { DocumentToolbar } from "../components/DocumentToolbar";
 
 import { useDocuments } from "../hooks/useDocuments";
 
@@ -87,22 +87,26 @@ export function DocumentListPage() {
       />
 
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="mb-6">
-          <DocumentSearch
-            value={search}
-            category={category}
-            status={status}
-            onSearchChange={
-              setSearch
-            }
-            onCategoryChange={
-              setCategory
-            }
-            onStatusChange={
-              setStatus
-            }
-          />
-        </div>
+
+        <DocumentToolbar
+          search={search}
+          category={category}
+          status={status}
+          onSearchChange={
+            setSearch
+          }
+          onCategoryChange={
+            setCategory
+          }
+          onStatusChange={
+            setStatus
+          }
+          onUpload={() => {}}
+          total={documents.length}
+          filtered={
+            filteredDocuments.length
+          }
+        />
 
         {loading ? (
           <Skeleton className="h-[500px] w-full rounded-xl" />
