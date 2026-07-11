@@ -38,9 +38,23 @@ const executiveMetrics: DashboardMetric[] = [
   },
 ];
 
-const monthlyRevenue: RevenuePoint[] = [];
+const monthlyRevenue: RevenuePoint[] = [
+  { month: "Jan", revenue: 2400000 },
+  { month: "Feb", revenue: 2550000 },
+  { month: "Mar", revenue: 2680000 },
+  { month: "Apr", revenue: 2810000 },
+  { month: "May", revenue: 2940000 },
+  { month: "Jun", revenue: 3080000 },
+];
 
-const monthlyTrend: TrendPoint[] = [];
+const monthlyTrend: TrendPoint[] = [
+  { label: "Jan", value: 82 },
+  { label: "Feb", value: 88 },
+  { label: "Mar", value: 91 },
+  { label: "Apr", value: 95 },
+  { label: "May", value: 98 },
+  { label: "Jun", value: 100 },
+];
 
 const clientAnalytics: ClientAnalytics = {
   totalClients: 186,
