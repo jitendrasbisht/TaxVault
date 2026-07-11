@@ -1,59 +1,184 @@
+import { useState } from "react";
+
+import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
 
-import { useComplianceDashboard } from "../hooks/useComplianceDashboard";
+import {
+  ComplianceFrequency,
+  CompliancePriority,
+  ComplianceStatus,
+  ComplianceTask,
+} from "../types";
 
-export function ComplianceCalendar() {
-  const { calendarEvents, loading } = useComplianceDashboard();
+interface ComplianceTaskFormProps {
+  initialValue?: Partial<ComplianceTask>;
+  onSubmit: (task: Omit<ComplianceTask, "id">) => void;
+  onCancel: () => void;
+}
+
+const priorities: CompliancePriority[] = [
+  "Low",
+  "Medium",
+  "High",
+  "Critical",
+];
+
+const statuses: ComplianceStatus[] = [
+  "Pending",
+  "In Progress",
+  "Completed",
+  "Overdue",
+];
+
+const frequencies: ComplianceFrequency[] = [
+  "One Time",
+  "Weekly",
+  "Monthly",
+  "Quarterly",
+  "Half Yearly",
+  "Yearly",
+];
+
+export function ComplianceTaskForm({
+  initialValue,
+  onSubmit,
+  onCancel,
+}: ComplianceTaskFormProps) {
+  const [form, setForm] = useState({
+    title: initialValue?.title ?? "",
+    description: initialValue?.description ?? "",
+    clientId: initialValue?.clientId ?? "",
+    clientName: initialValue?.clientName ?? "",
+    assignedTo: initialValue?.assignedTo ?? "",
+    priority: initialValue?.priority ?? "Medium",
+    status: initialValue?.status ?? "Pending",
+    frequency: initialValue?.frequency ?? "Monthly",
+    dueDate: initialValue?.dueDate ?? "",
+    recurring: initialValue?.recurring ?? true,
+  });
+
+  const handleSubmit = () => {
+    onSubmit({
+      ...form,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      tags: [],
+      timeline: [],
+      activity: [],
+    });
+  };
 
   return (
-    <Card className="p-6">
-      <h2 className="mb-4 text-lg font-semibold">
-        Compliance Calendar
-      </h2>
+    <Card className="space-y-5 p-6">
+      <Input
+        placeholder="Task Title"
+        value={form.title}
+        onChange={(e) =>
+          setForm({ ...form, title: e.target.value })
+        }
+      />
 
-      {loading ? (
-        <p className="text-sm text-slate-500">
-          Loading calendar...
-        </p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b">
-                <th className="py-3 text-left">Due Date</th>
-                <th className="text-left">Task</th>
-                <th className="text-left">Priority</th>
-                <th className="text-left">Status</th>
-              </tr>
-            </thead>
+      <Input
+        placeholder="Description"
+        value={form.description}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            description: e.target.value,
+          })
+        }
+      />
 
-            <tbody>
-              {calendarEvents.map((event) => (
-                <tr
-                  key={event.id}
-                  className="border-b last:border-none"
-                >
-                  <td className="py-3">{event.dueDate}</td>
-                  <td>{event.title}</td>
-                  <td>{event.priority}</td>
-                  <td>{event.status}</td>
-                </tr>
-              ))}
+      <Input
+        placeholder="Client Name"
+        value={form.clientName}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            clientName: e.target.value,
+          })
+        }
+      />
 
-              {calendarEvents.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={4}
-                    className="py-8 text-center text-slate-500"
-                  >
-                    No upcoming compliance events.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <Input
+        placeholder="Assigned To"
+        value={form.assignedTo}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            assignedTo: e.target.value,
+          })
+        }
+      />
+
+      <Input
+        type="date"
+        value={form.dueDate}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            dueDate: e.target.value,
+          })
+        }
+      />
+
+      <div className="grid grid-cols-3 gap-4">
+        <select
+          className="rounded-md border p-2"
+          value={form.priority}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              priority: e.target.value as CompliancePriority,
+            })
+          }
+        >
+          {priorities.map((item) => (
+            <option key={item}>{item}</option>
+          ))}
+        </select>
+
+        <select
+          className="rounded-md border p-2"
+          value={form.status}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              status: e.target.value as ComplianceStatus,
+            })
+          }
+        >
+          {statuses.map((item) => (
+            <option key={item}>{item}</option>
+          ))}
+        </select>
+
+        <select
+          className="rounded-md border p-2"
+          value={form.frequency}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              frequency: e.target.value as ComplianceFrequency,
+            })
+          }
+        >
+          {frequencies.map((item) => (
+            <option key={item}>{item}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="flex justify-end gap-3">
+        <Button variant="outline" onClick={onCancel}>
+          Cancel
+        </Button>
+
+        <Button onClick={handleSubmit}>
+          Save Compliance
+        </Button>
+      </div>
     </Card>
   );
 }

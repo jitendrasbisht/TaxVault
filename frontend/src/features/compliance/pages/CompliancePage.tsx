@@ -1,7 +1,7 @@
 import { PageHeader } from "@/components/ui/PageHeader";
 
-import { ComplianceDashboard } from "../ComplianceDashboard";
-import { ComplianceTaskTable } from "../ComplianceTaskTable";
+import { ComplianceDashboard } from "../components/ComplianceDashboard";
+import { ComplianceTaskTable } from "../components/ComplianceTaskTable";
 
 export function CompliancePage() {
   return (
