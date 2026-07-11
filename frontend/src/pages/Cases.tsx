@@ -79,6 +79,79 @@ const cases = [
   },
 ];
 
+const recentActivity = [
+  {
+    title: "GST Filing submitted",
+    client: "ABC Manufacturing",
+    time: "5 min ago",
+    color: "bg-emerald-500",
+  },
+  {
+    title: "Notice uploaded",
+    client: "Global Traders",
+    time: "22 min ago",
+    color: "bg-blue-500",
+  },
+  {
+    title: "Client replied",
+    client: "Zen Technologies",
+    time: "1 hour ago",
+    color: "bg-amber-500",
+  },
+  {
+    title: "Assessment reopened",
+    client: "NextGen Solutions",
+    time: "Today",
+    color: "bg-red-500",
+  },
+];
+
+const deadlines = [
+  {
+    title: "GST Return",
+    date: "Today",
+    color: "bg-red-500",
+  },
+  {
+    title: "Income Tax Return",
+    date: "Tomorrow",
+    color: "bg-amber-500",
+  },
+  {
+    title: "Audit Report",
+    date: "15 Jul",
+    color: "bg-blue-500",
+  },
+  {
+    title: "TDS Filing",
+    date: "18 Jul",
+    color: "bg-emerald-500",
+  },
+];
+
+const workload = [
+  {
+    name: "Rahul",
+    progress: "80%",
+    width: "80%",
+  },
+  {
+    name: "Priya",
+    progress: "60%",
+    width: "60%",
+  },
+  {
+    name: "Amit",
+    progress: "95%",
+    width: "95%",
+  },
+  {
+    name: "Neha",
+    progress: "40%",
+    width: "40%",
+  },
+];
+
 function badge(priority: string) {
   switch (priority) {
     case "Critical":
@@ -330,6 +403,90 @@ function Cases() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Activity, Deadlines, and Workload Grid */}
+      <div className="grid gap-6 xl:grid-cols-3">
+        <div className="xl:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-slate-900">
+            Recent Activities
+          </h2>
+          <div className="mt-6 space-y-5">
+            {recentActivity.map((item) => (
+              <div
+                key={item.title}
+                className="flex items-start gap-4"
+              >
+                <div className={`mt-2 h-3 w-3 rounded-full ${item.color}`} />
+                <div className="flex-1">
+                  <p className="font-medium text-slate-900">
+                    {item.title}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {item.client}
+                  </p>
+                </div>
+                <span className="text-sm text-slate-400">
+                  {item.time}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-slate-900">
+              Upcoming Deadlines
+            </h2>
+            <div className="mt-6 space-y-4">
+              {deadlines.map((item) => (
+                <div
+                  key={item.title}
+                  className="flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`h-3 w-3 rounded-full ${item.color}`} />
+                    <span className="font-medium">
+                      {item.title}
+                    </span>
+                  </div>
+                  <span className="text-sm text-slate-500">
+                    {item.date}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-semibold text-slate-900">
+              Team Workload
+            </h2>
+            <div className="mt-6 space-y-5">
+              {workload.map((item) => (
+                <div key={item.name}>
+                  <div className="mb-2 flex justify-between">
+                    <span className="font-medium">
+                      {item.name}
+                    </span>
+                    <span className="text-sm text-slate-500">
+                      {item.progress}
+                    </span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+                    <div
+                      className="h-full rounded-full bg-blue-600"
+                      style={{
+                        width: item.width,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import AppLayout from "../components/layout/AppLayout";
 
 import DashboardPage from "../pages/Dashboard";
 import CasesPage from "../pages/Cases";
+import CaseDetailsPage from "../pages/CaseDetails";
 import DocumentsPage from "../pages/Documents";
 import ReportsPage from "../pages/Reports";
 import SettingsPage from "../pages/Settings";
@@ -12,7 +13,9 @@ import NotFoundPage from "../pages/NotFound";
 import LoginPage from "../features/auth/pages/LoginPage";
 import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
 
-import { ClientListPage } from "../features/clients/pages/ClientListPage";
+import {
+  ClientListPage,
+} from "../features/clients/pages/ClientListPage";
 import ClientDetailsPage from "../features/clients/pages/ClientDetailsPage";
 
 import {
@@ -72,6 +75,11 @@ export default function AppRoutes() {
           <Route
             path="/cases"
             element={<CasesPage />}
+          />
+
+          <Route
+            path="/cases/:id"
+            element={<CaseDetailsPage />}
           />
 
           <Route
