@@ -10,7 +10,7 @@ export function ReportsDashboardPage() {
     <div className="space-y-8">
       <PageHeader
         title="Reports & Dashboard"
-        description="Executive insights, revenue trends and business analytics."
+        description="Executive reporting, revenue insights and business analytics."
       />
 
       <ExecutiveDashboard />

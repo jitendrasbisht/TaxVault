@@ -1,33 +1,45 @@
-import { Card } from "@/components/ui/Card";
+import {
+  Briefcase,
+  FileText,
+  IndianRupee,
+  ShieldCheck,
+} from "lucide-react";
 
+import { ReportStatCard } from "./ReportStatCard";
 import { useExecutiveDashboard } from "../hooks/useExecutiveDashboard";
 
 export function ExecutiveDashboard() {
   const { metrics } = useExecutiveDashboard();
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-      {metrics.map((metric) => (
-        <Card key={metric.id}>
-          <div className="space-y-2">
-            <p className="text-sm text-slate-500">{metric.title}</p>
+    <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      <ReportStatCard
+        title={metrics[0]?.title ?? ""}
+        value={metrics[0]?.value ?? ""}
+        icon={<IndianRupee className="h-6 w-6" />}
+        colorClass="text-emerald-600"
+      />
 
-            <h2 className="text-3xl font-bold">{metric.value}</h2>
+      <ReportStatCard
+        title={metrics[1]?.title ?? ""}
+        value={metrics[1]?.value ?? ""}
+        icon={<Briefcase className="h-6 w-6" />}
+        colorClass="text-blue-600"
+      />
 
-            <p
-              className={`text-sm font-medium ${
-                metric.trend === "up"
-                  ? "text-green-600"
-                  : metric.trend === "down"
-                  ? "text-red-600"
-                  : "text-slate-500"
-              }`}
-            >
-              {metric.change}% vs last month
-            </p>
-          </div>
-        </Card>
-      ))}
+      <ReportStatCard
+        title={metrics[2]?.title ?? ""}
+        value={metrics[2]?.value ?? ""}
+        icon={<ShieldCheck className="h-6 w-6" />}
+        colorClass="text-violet-600"
+      />
+
+      <ReportStatCard
+        title={metrics[3]?.title ?? ""}
+        value={metrics[3]?.value ?? ""}
+        icon={<FileText className="h-6 w-6" />}
+        colorClass="text-amber-600"
+      />
     </div>
   );
 }
