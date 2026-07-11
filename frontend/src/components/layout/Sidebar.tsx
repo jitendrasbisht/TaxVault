@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   Settings,
   Users,
+  ShieldCheck,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -43,18 +44,31 @@ const navigation = [
 
 function Sidebar() {
   return (
-    <aside className="flex min-h-screen w-64 flex-col border-r border-slate-800 bg-slate-900 text-white">
-      {/* Logo */}
-      <div className="border-b border-slate-800 px-6 py-5">
-        <h1 className="text-2xl font-bold tracking-tight">TaxVault</h1>
+    <aside className="flex min-h-screen w-[272px] flex-col border-r border-slate-800 bg-slate-900 text-white">
 
-        <p className="mt-1 text-sm text-slate-400">
-          Tax Management Platform
-        </p>
+      <div className="border-b border-slate-800 px-7 py-7">
+
+        <div className="flex items-center gap-3">
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600">
+            <ShieldCheck size={24} />
+          </div>
+
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">
+              TaxVault
+            </h1>
+
+            <p className="text-xs text-slate-400">
+              Enterprise Suite
+            </p>
+          </div>
+
+        </div>
+
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 py-6">
+      <nav className="flex-1 px-4 py-6">
         <ul className="space-y-2">
           {navigation.map((item) => {
             const Icon = item.icon;
@@ -64,15 +78,19 @@ function Sidebar() {
                 <NavLink
                   to={item.href}
                   className={({ isActive }) =>
-                    `flex w-full items-center gap-3 rounded-lg px-4 py-3 transition ${
+                    `group flex items-center gap-4 rounded-xl px-4 py-3.5 text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? "bg-slate-800 text-white"
-                        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                        ? "bg-blue-600 text-white shadow-lg"
+                        : "text-slate-300 hover:bg-slate-800 hover:text-white hover:translate-x-1"
                     }`
                   }
                 >
-                  <Icon size={18} />
-                  <span>{item.name}</span>
+                  <Icon
+                    size={19}
+                    className="transition-transform group-hover:scale-110"
+                  />
+
+                  {item.name}
                 </NavLink>
               </li>
             );
@@ -80,10 +98,26 @@ function Sidebar() {
         </ul>
       </nav>
 
-      {/* Footer */}
-      <div className="border-t border-slate-800 p-6 text-sm text-slate-400">
-        TaxVault v1.0
+      <div className="border-t border-slate-800 p-6">
+
+        <div className="rounded-2xl bg-slate-800 p-4">
+
+          <p className="text-xs uppercase tracking-widest text-slate-500">
+            Version
+          </p>
+
+          <p className="mt-2 text-lg font-semibold">
+            TaxVault v1.0
+          </p>
+
+          <p className="mt-1 text-sm text-slate-400">
+            Enterprise Edition
+          </p>
+
+        </div>
+
       </div>
+
     </aside>
   );
 }

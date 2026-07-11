@@ -8,30 +8,31 @@ import {
   DashboardInsights,
   DocumentAnalyticsSummary,
   ExecutiveDashboard,
-  ExportReports,
-  MonthlyTrendSummary,
   NotificationsPanel,
   PerformanceSummary,
   QuickActions,
-  ReportFilters,
-  ReportStatusOverview,
   RevenueSummary,
   SystemHealth,
   TopClients,
   UpcomingDeadlines,
-} from "../components";
+} from "@/features/reports/components";
 
-export function ReportsDashboardPage() {
+export default function DashboardPage() {
   return (
     <div className="space-y-10">
-      <PageHeader
-        title="Reports & Dashboard"
-        description="Executive reporting, revenue insights and business analytics."
-      />
 
-      <ReportFilters />
+      <section className="rounded-3xl border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-8 text-white shadow-xl">
 
-      <ExecutiveDashboard />
+        <PageHeader
+          title="Executive Dashboard"
+          description="Monitor your firm's performance, compliance health and operational insights."
+        />
+
+        <div className="mt-8">
+          <ExecutiveDashboard />
+        </div>
+
+      </section>
 
       <div className="grid gap-6 xl:grid-cols-3">
         <RevenueSummary />
@@ -41,7 +42,7 @@ export function ReportsDashboardPage() {
 
       <div className="grid gap-6 xl:grid-cols-2">
         <DocumentAnalyticsSummary />
-        <MonthlyTrendSummary />
+        <PerformanceSummary />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
@@ -50,26 +51,20 @@ export function ReportsDashboardPage() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
-        <PerformanceSummary />
         <UpcomingDeadlines />
-      </div>
-
-      <div className="grid gap-6 xl:grid-cols-2">
         <QuickActions />
-        <SystemHealth />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
         <TopClients />
-        <BusinessHighlights />
+        <SystemHealth />
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
+        <BusinessHighlights />
         <NotificationsPanel />
-        <ReportStatusOverview />
       </div>
 
-      <ExportReports />
     </div>
   );
 }
