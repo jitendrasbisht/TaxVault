@@ -5,7 +5,7 @@ import {
   Users,
 } from "lucide-react";
 
-import KPICard from "../components/KPICard";
+import KPICard from "../components/ui/KPICard";
 import { PageHeader } from "../components/ui";
 
 function Dashboard() {
