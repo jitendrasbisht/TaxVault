@@ -1,3 +1,5 @@
+import { ContentCard } from "@/components/ui";
+
 const activities = [
   {
     title: "GST Return Filed",
@@ -23,7 +25,8 @@ const activities = [
 
 export default function RecentActivityCard() {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <ContentCard>
+
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-lg font-semibold">
           Recent Activity
@@ -37,7 +40,7 @@ export default function RecentActivityCard() {
       <div className="space-y-5">
         {activities.map((activity) => (
           <div
-            key={`${activity.title}-${activity.client}`}
+            key={activity.title}
             className="flex items-start justify-between"
           >
             <div>
@@ -45,7 +48,7 @@ export default function RecentActivityCard() {
                 {activity.title}
               </h3>
 
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="text-sm text-slate-500">
                 {activity.client}
               </p>
             </div>
@@ -53,9 +56,11 @@ export default function RecentActivityCard() {
             <span className="text-xs text-slate-400">
               {activity.time}
             </span>
+
           </div>
         ))}
       </div>
-    </div>
+
+    </ContentCard>
   );
 }

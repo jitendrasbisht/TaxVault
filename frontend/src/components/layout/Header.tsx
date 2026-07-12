@@ -21,7 +21,7 @@ function Header() {
         : "Good Evening";
 
   return (
-    <header className="border-b border-slate-200 bg-white">
+    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white">
       <div className="flex h-20 items-center justify-between px-8">
 
         {/* Left */}

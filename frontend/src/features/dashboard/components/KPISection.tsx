@@ -1,33 +1,41 @@
-import { StatCard } from "@/components/ui";
+import {
+  CardGrid,
+  MetricBadge,
+  StatCard,
+} from "@/components/ui";
 
 export default function KPISection() {
   return (
-    <div className="grid gap-6 lg:grid-cols-4">
+    <CardGrid>
 
       <StatCard
         title="Active Clients"
         value="1,254"
-        footer="? 12% this month"
+        footer=""
+        icon={<MetricBadge value="+12%" />}
       />
 
       <StatCard
         title="Open Cases"
         value="218"
-        footer="18 require attention"
+        footer=""
+        icon={<MetricBadge value="18 Due" positive={false} />}
       />
 
       <StatCard
         title="Pending Documents"
         value="76"
-        footer="Awaiting upload"
+        footer=""
+        icon={<MetricBadge value="Review" />}
       />
 
       <StatCard
         title="Compliance Score"
         value="98%"
-        footer="Excellent"
+        footer=""
+        icon={<MetricBadge value="Healthy" />}
       />
 
-    </div>
+    </CardGrid>
   );
 }
