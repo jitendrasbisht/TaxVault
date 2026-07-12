@@ -1,26 +1,26 @@
 import { Link } from "react-router-dom";
 
-export default function NotFoundPage() {
+export default function UnauthorizedPage() {
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center text-center">
 
-      <h1 className="text-7xl font-bold text-blue-600">
-        404
+      <h1 className="text-6xl font-bold text-amber-500">
+        403
       </h1>
 
       <h2 className="mt-6 text-3xl font-bold">
-        Page Not Found
+        Access Denied
       </h2>
 
       <p className="mt-3 text-slate-500">
-        The page you are looking for does not exist.
+        You don't have permission to access this page.
       </p>
 
       <Link
         to="/dashboard"
-        className="mt-8 rounded-xl bg-slate-900 px-6 py-3 font-medium text-white hover:bg-slate-800"
+        className="mt-8 rounded-xl bg-slate-900 px-6 py-3 text-white hover:bg-slate-800"
       >
-        Back to Dashboard
+        Go to Dashboard
       </Link>
 
     </div>

@@ -9,6 +9,7 @@ import DocumentsPage from "../pages/Documents";
 import ReportsPage from "../pages/Reports";
 import SettingsPage from "../pages/Settings";
 import NotFoundPage from "../pages/NotFound";
+import UnauthorizedPage from "../pages/Unauthorized";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import ForgotPasswordPage from "../features/auth/pages/ForgotPasswordPage";
@@ -100,6 +101,11 @@ export default function AppRoutes() {
           <Route
             path="/settings"
             element={<SettingsPage />}
+          />
+
+          <Route
+            path="/unauthorized"
+            element={<UnauthorizedPage />}
           />
 
         </Route>

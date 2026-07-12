@@ -4,10 +4,12 @@ import {
   FolderOpen,
   LayoutDashboard,
   Settings,
-  Users,
   ShieldCheck,
+  Users,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+
+import { AppVersion } from "@/components/ui";
 
 const navigation = [
   {
@@ -55,6 +57,7 @@ function Sidebar() {
           </div>
 
           <div>
+
             <h1 className="text-2xl font-bold tracking-tight">
               TaxVault
             </h1>
@@ -62,6 +65,7 @@ function Sidebar() {
             <p className="text-xs text-slate-400">
               Enterprise Suite
             </p>
+
           </div>
 
         </div>
@@ -69,12 +73,15 @@ function Sidebar() {
       </div>
 
       <nav className="flex-1 px-4 py-6">
+
         <ul className="space-y-2">
+
           {navigation.map((item) => {
             const Icon = item.icon;
 
             return (
               <li key={item.name}>
+
                 <NavLink
                   to={item.href}
                   className={({ isActive }) =>
@@ -91,30 +98,20 @@ function Sidebar() {
                   />
 
                   {item.name}
+
                 </NavLink>
+
               </li>
             );
           })}
+
         </ul>
+
       </nav>
 
       <div className="border-t border-slate-800 p-6">
 
-        <div className="rounded-2xl bg-slate-800 p-4">
-
-          <p className="text-xs uppercase tracking-widest text-slate-500">
-            Version
-          </p>
-
-          <p className="mt-2 text-lg font-semibold">
-            TaxVault v1.0
-          </p>
-
-          <p className="mt-1 text-sm text-slate-400">
-            Enterprise Edition
-          </p>
-
-        </div>
+        <AppVersion />
 
       </div>
 
