@@ -1,9 +1,13 @@
-import axios from "axios";
+import axios, {
+  type AxiosError,
+  type InternalAxiosRequestConfig,
+  type AxiosResponse,
+} from "axios";
 
 const baseURL =
   import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
-export const api = axios.create({
+const api = axios.create({
   baseURL,
   timeout: 30000,
   headers: {
@@ -11,19 +15,21 @@ export const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("taxvault_token");
+api.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem("taxvault_token");
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
   }
-
-  return config;
-});
+);
 
 api.interceptors.response.use(
-  (response) => response,
-  (error) => Promise.reject(error)
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => Promise.reject(error)
 );
 
 export default api;
