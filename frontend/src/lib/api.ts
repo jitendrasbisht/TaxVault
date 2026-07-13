@@ -4,6 +4,8 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 
+import { AUTH_TOKEN_KEY } from "@/services/api/constants";
+
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_BASE_URL ??
@@ -16,22 +18,21 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("taxvault_token");
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
-  },
-  (error: AxiosError) => Promise.reject(error)
+  }
 );
 
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("taxvault_token");
+      localStorage.removeItem(AUTH_TOKEN_KEY);
     }
 
     return Promise.reject(error);
