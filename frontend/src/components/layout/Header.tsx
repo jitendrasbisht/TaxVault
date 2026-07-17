@@ -1,15 +1,25 @@
 import {
-  Bell,
+
   Search,
   Plus,
   Sparkles,
 } from "lucide-react";
+import { useState } from "react";
 
 import { Dropdown } from "@/components/ui/Dropdown";
 import { useAuth } from "@/features/auth";
+import {
+  NotificationBadge,
+  NotificationPanel,
+  getUnreadCount,
+  useNotifications,
+} from "@/features/notifications";
 
 function Header() {
   const { user, logout } = useAuth();
+  const { notifications } = useNotifications();
+
+  const [openNotifications, setOpenNotifications] = useState(false);
 
   const hour = new Date().getHours();
 
@@ -24,8 +34,6 @@ function Header() {
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white">
       <div className="flex h-20 items-center justify-between px-8">
 
-        {/* Left */}
-
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <Sparkles
@@ -35,7 +43,7 @@ function Header() {
 
             <h1 className="text-2xl font-bold text-slate-900">
               {greeting},{" "}
-              {user?.name?.split(" ")[0] ?? "User"} 👋
+              {user?.name?.split(" ")[0] ?? "User"} ??
             </h1>
           </div>
 
@@ -45,8 +53,6 @@ function Header() {
             and business performance.
           </p>
         </div>
-
-        {/* Right */}
 
         <div className="flex items-center gap-4">
 
@@ -67,11 +73,22 @@ function Header() {
             New
           </button>
 
-          <button className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-slate-300 transition hover:bg-slate-100">
-            <Bell size={18} />
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() =>
+                setOpenNotifications(!openNotifications)
+              }
+            >
+              <NotificationBadge
+                count={getUnreadCount(notifications)}
+              />
+            </button>
 
-            <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-red-500" />
-          </button>
+            <NotificationPanel
+              open={openNotifications}
+            />
+          </div>
 
           <Dropdown
             label={user?.name ?? "User"}

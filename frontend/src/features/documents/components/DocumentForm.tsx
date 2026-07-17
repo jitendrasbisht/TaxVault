@@ -61,7 +61,7 @@ export function DocumentForm({
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid },
   } =
     useForm<DocumentFormValues>({
       resolver:
