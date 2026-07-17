@@ -9,8 +9,8 @@ import { Button } from "@/components/ui/Button";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Input } from "@/components/ui/Input";
 
-import { useAuth } from "../useAuth";
-import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
+import { useAuth } from "./useAuth";
+import { loginSchema, type LoginFormData } from "./schemas/loginSchema";
 
 export default function LoginForm() {
   const { login } = useAuth();

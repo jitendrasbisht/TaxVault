@@ -1,5 +1,6 @@
-import {
+﻿import {
   Briefcase,
+  ClipboardList,
   FileText,
   FolderOpen,
   LayoutDashboard,
@@ -33,6 +34,11 @@ const navigation = [
     icon: FolderOpen,
   },
   {
+    name: "Document Requests",
+    href: "/document-requests",
+    icon: ClipboardList,
+  },
+  {
     name: "Reports",
     href: "/reports",
     icon: FileText,
@@ -47,17 +53,13 @@ const navigation = [
 function Sidebar() {
   return (
     <aside className="flex min-h-screen w-[272px] flex-col border-r border-slate-800 bg-slate-900 text-white">
-
       <div className="border-b border-slate-800 px-7 py-7">
-
         <div className="flex items-center gap-3">
-
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600">
             <ShieldCheck size={24} />
           </div>
 
           <div>
-
             <h1 className="text-2xl font-bold tracking-tight">
               TaxVault
             </h1>
@@ -65,23 +67,17 @@ function Sidebar() {
             <p className="text-xs text-slate-400">
               Enterprise Suite
             </p>
-
           </div>
-
         </div>
-
       </div>
 
       <nav className="flex-1 px-4 py-6">
-
         <ul className="space-y-2">
-
           {navigation.map((item) => {
             const Icon = item.icon;
 
             return (
               <li key={item.name}>
-
                 <NavLink
                   to={item.href}
                   className={({ isActive }) =>
@@ -98,23 +94,16 @@ function Sidebar() {
                   />
 
                   {item.name}
-
                 </NavLink>
-
               </li>
             );
           })}
-
         </ul>
-
       </nav>
 
       <div className="border-t border-slate-800 p-6">
-
         <AppVersion />
-
       </div>
-
     </aside>
   );
 }

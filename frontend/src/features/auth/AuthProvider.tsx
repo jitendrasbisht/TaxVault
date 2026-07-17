@@ -2,7 +2,6 @@
 import { AuthContext } from "./AuthContext";
 import {
   clearStoredUser,
-  getStoredUser,
   setStoredUser,
 } from "./authStorage";
 import type {

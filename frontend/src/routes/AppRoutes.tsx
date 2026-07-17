@@ -23,6 +23,8 @@ import {
   DocumentDetailsPage,
 } from "../features/documents";
 
+import RequestListPage from "../features/document-requests/pages/RequestListPage";
+
 import {
   ProtectedRoute,
   PublicRoute,
@@ -91,6 +93,11 @@ export default function AppRoutes() {
           <Route
             path="/documents/:id"
             element={<DocumentDetailsPage />}
+          />
+
+          <Route
+            path="/document-requests"
+            element={<RequestListPage />}
           />
 
           <Route

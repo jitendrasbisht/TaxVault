@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -25,7 +25,7 @@ interface DocumentFormProps {
 
   onSubmit: (
     values: DocumentFormValues,
-  ) => void;
+  ) => void | Promise<void>;
 
   onCancel: () => void;
 }
@@ -54,17 +54,21 @@ export function DocumentForm({
   onSubmit,
   onCancel,
 }: DocumentFormProps) {
+  const [submitMessage, setSubmitMessage] = useState<"success" | "error" | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
   } =
     useForm<DocumentFormValues>({
       resolver:
         zodResolver(
           documentSchema,
         ),
+      mode: "onChange",
       defaultValues:
         defaultValues ??
         defaultDocumentValues,
@@ -96,13 +100,34 @@ export function DocumentForm({
           defaultValues.description ??
           "",
       });
+      setSubmitMessage(null);
     }
   }, [defaultValues, reset]);
+
+  const canSubmit = useMemo(() => isValid && !isSubmitting, [isValid, isSubmitting]);
+
+  async function onSubmitWithFeedback(values: DocumentFormValues) {
+    if (isSubmitting) {
+      return;
+    }
+
+    setSubmitMessage(null);
+    setIsSubmitting(true);
+
+    try {
+      await onSubmit(values);
+      setSubmitMessage("success");
+    } catch {
+      setSubmitMessage("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <form
       onSubmit={handleSubmit(
-        onSubmit,
+        onSubmitWithFeedback,
       )}
       className="space-y-6"
     >
@@ -250,6 +275,14 @@ export function DocumentForm({
         </div>
       </div>
 
+      {submitMessage && (
+        <div className={`rounded-md border px-3 py-2 text-sm ${submitMessage === "success" ? "border-green-200 bg-green-50 text-green-700" : "border-red-200 bg-red-50 text-red-700"}`}>
+          {submitMessage === "success"
+            ? "Document saved successfully."
+            : "Unable to save the document. Please try again."}
+        </div>
+      )}
+
       <div className="flex justify-end gap-3 border-t border-slate-200 pt-6">
         <Button
           type="button"
@@ -261,7 +294,8 @@ export function DocumentForm({
 
         <Button
           type="submit"
-          loading={loading}
+          loading={loading || isSubmitting}
+          disabled={!canSubmit}
         >
           {submitLabel}
         </Button>
