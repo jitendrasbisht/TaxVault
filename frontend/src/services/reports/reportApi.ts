@@ -1,23 +1,33 @@
-import { api } from "@/services/api";
+﻿import api from "@/lib/api";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 
 export const reportApi = {
   getAll(params?: Record<string, unknown>) {
-    return api.get(API_ENDPOINTS.reports, { params });
+    return api.get(API_ENDPOINTS.reports, {
+      params,
+    });
   },
 
   getById(id: string) {
-    return api.get(`${API_ENDPOINTS.reports}/${id}`);
+    return api.get(
+      `${API_ENDPOINTS.reports}/${id}`
+    );
   },
 
   generate(data: unknown) {
-    return api.post(API_ENDPOINTS.reports, data);
+    return api.post(
+      API_ENDPOINTS.reports,
+      data
+    );
   },
 
   download(id: string) {
-    return api.get(`${API_ENDPOINTS.reports}/${id}/download`, {
-      responseType: "blob",
-    });
+    return api.get(
+      `${API_ENDPOINTS.reports}/${id}/download`,
+      {
+        responseType: "blob",
+      }
+    );
   },
 };
 

@@ -1,10 +1,10 @@
-import axios, {
+﻿import axios, {
   AxiosError,
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
 
-import { AUTH_TOKEN_KEY } from "@/services/api/constants";
+import tokenStorage from "@/services/auth/tokenStorage";
 
 const api = axios.create({
   baseURL:
@@ -18,7 +18,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    const token = tokenStorage.getAccessToken();
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -32,7 +32,7 @@ api.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem(AUTH_TOKEN_KEY);
+      tokenStorage.clear();
     }
 
     return Promise.reject(error);

@@ -1,3 +1,5 @@
+﻿import api from "@/lib/api";
+
 import type {
   DashboardMetric,
   RevenuePoint,
@@ -6,37 +8,6 @@ import type {
   ComplianceAnalytics,
   DocumentAnalytics,
 } from "../types";
-
-const executiveMetrics: DashboardMetric[] = [
-  {
-    id: "revenue",
-    title: "Revenue",
-    value: "₹2.45 Cr",
-    change: 12.4,
-    trend: "up",
-  },
-  {
-    id: "clients",
-    title: "Active Clients",
-    value: 148,
-    change: 6.8,
-    trend: "up",
-  },
-  {
-    id: "compliance",
-    title: "Compliance Rate",
-    value: "96%",
-    change: 1.5,
-    trend: "up",
-  },
-  {
-    id: "documents",
-    title: "Documents",
-    value: 4289,
-    change: 4.2,
-    trend: "up",
-  },
-];
 
 const monthlyRevenue: RevenuePoint[] = [
   { month: "Jan", revenue: 2400000 },
@@ -78,7 +49,41 @@ const documentAnalytics: DocumentAnalytics = {
 };
 
 export const reportService = {
-  getExecutiveMetrics: async () => executiveMetrics,
+  async getExecutiveMetrics(): Promise<DashboardMetric[]> {
+    const { data } = await api.get("/dashboard/summary");
+
+    return [
+      {
+        id: "clients",
+        title: "Clients",
+        value: data.clients,
+        change: 0,
+        trend: "up",
+      },
+      {
+        id: "cases",
+        title: "Cases",
+        value: data.cases,
+        change: 0,
+        trend: "up",
+      },
+      {
+        id: "compliance",
+        title: "Compliance",
+        value: data.compliance,
+        change: 0,
+        trend: "up",
+      },
+      {
+        id: "documents",
+        title: "Documents",
+        value: data.documents,
+        change: 0,
+        trend: "up",
+      },
+    ];
+  },
+
   getRevenue: async () => monthlyRevenue,
   getMonthlyTrend: async () => monthlyTrend,
   getClientAnalytics: async () => clientAnalytics,

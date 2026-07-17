@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import {
   clearStoredUser,
@@ -12,6 +12,9 @@ import type {
   User,
 } from "./types";
 
+import authApi from "@/services/auth/authApi";
+import tokenStorage from "@/services/auth/tokenStorage";
+
 export function AuthProvider({
   children,
 }: {
@@ -24,25 +27,62 @@ export function AuthProvider({
   });
 
   useEffect(() => {
-    const user = getStoredUser();
+    async function initialize() {
+      const token = tokenStorage.getAccessToken();
 
-    setState({
-      user,
-      isAuthenticated: !!user,
-      isLoading: false,
-    });
+      if (!token) {
+        setState({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+        });
+        return;
+      }
+
+      try {
+        const { data } = await authApi.me();
+
+        const user: User = {
+          id: String(data.id),
+          name: data.full_name,
+          email: data.email,
+          role: "Administrator",
+        };
+
+        setStoredUser(user);
+
+        setState({
+          user,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      } catch {
+        tokenStorage.clear();
+        clearStoredUser();
+
+        setState({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+        });
+      }
+    }
+
+    initialize();
   }, []);
 
   const login = useCallback(async (credentials: LoginCredentials) => {
-    // TODO:
-    // Replace with FastAPI authentication endpoint.
+    const { data: tokens } = await authApi.login(credentials);
 
-    await new Promise((resolve) => setTimeout(resolve, 700));
+    tokenStorage.setAccessToken(tokens.access_token);
+    tokenStorage.setRefreshToken(tokens.refresh_token);
+
+    const { data } = await authApi.me();
 
     const user: User = {
-      id: crypto.randomUUID(),
-      name: "Demo User",
-      email: credentials.email,
+      id: String(data.id),
+      name: data.full_name,
+      email: data.email,
       role: "Administrator",
     };
 
@@ -56,6 +96,7 @@ export function AuthProvider({
   }, []);
 
   const logout = useCallback(() => {
+    tokenStorage.clear();
     clearStoredUser();
 
     setState({
@@ -75,6 +116,8 @@ export function AuthProvider({
   );
 
   return (
-    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
   );
 }

@@ -1,41 +1,43 @@
-import {
+﻿import {
   CardGrid,
   MetricBadge,
   StatCard,
 } from "@/components/ui";
 
+import { useKPI } from "../hooks/useKPI";
+
 export default function KPISection() {
+  const { data } = useKPI();
+
   return (
     <CardGrid>
-
       <StatCard
         title="Active Clients"
-        value="1,254"
+        value={data?.clients ?? "..."}
         footer=""
-        icon={<MetricBadge value="+12%" />}
+        icon={<MetricBadge value="Live" />}
       />
 
       <StatCard
         title="Open Cases"
-        value="218"
+        value={data?.cases ?? "..."}
         footer=""
-        icon={<MetricBadge value="18 Due" positive={false} />}
+        icon={<MetricBadge value="Live" />}
       />
 
       <StatCard
         title="Pending Documents"
-        value="76"
+        value={data?.documents ?? "..."}
         footer=""
-        icon={<MetricBadge value="Review" />}
+        icon={<MetricBadge value="Live" />}
       />
 
       <StatCard
-        title="Compliance Score"
-        value="98%"
+        title="Compliance Records"
+        value={data?.compliance ?? "..."}
         footer=""
-        icon={<MetricBadge value="Healthy" />}
+        icon={<MetricBadge value="Live" />}
       />
-
     </CardGrid>
   );
 }

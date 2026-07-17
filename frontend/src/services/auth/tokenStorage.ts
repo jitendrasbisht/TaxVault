@@ -1,7 +1,7 @@
-import {
+﻿import {
   AUTH_TOKEN_KEY,
   REFRESH_TOKEN_KEY,
-} from "@/services/api/constants";
+} from "@/services/api";
 
 export const tokenStorage = {
   getAccessToken() {
@@ -29,8 +29,8 @@ export const tokenStorage = {
   },
 
   clear() {
-    localStorage.removeItem(AUTH_TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    this.removeAccessToken();
+    this.removeRefreshToken();
   },
 };
 
