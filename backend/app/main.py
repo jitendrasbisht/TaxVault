@@ -1,12 +1,7 @@
 ﻿from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.auth import router as auth_router
-from app.api.v1.endpoints.health import router as health_router
-from app.api.v1.endpoints.clients import router as client_router
-from app.api.v1.endpoints.cases import router as case_router
-from app.api.v1.endpoints.compliance import router as compliance_router
-from app.api.v1.endpoints.documents import router as document_router
-from app.api.v1.endpoints.dashboard import router as dashboard_router
+from app.api.v1.router import api_router
 from app.core.config import settings
 
 app = FastAPI(
@@ -14,10 +9,14 @@ app = FastAPI(
     version=settings.app_version,
 )
 
-app.include_router(health_router)
-app.include_router(auth_router)
-app.include_router(client_router)
-app.include_router(case_router)
-app.include_router(compliance_router)
-app.include_router(document_router)
-app.include_router(dashboard_router)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(api_router)
