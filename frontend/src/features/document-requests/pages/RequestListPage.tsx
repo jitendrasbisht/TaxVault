@@ -126,21 +126,24 @@ export default function RequestListPage() {
       )}
 
       <AddRequestModal
-        open={addModalOpen}
-        onClose={() =>
-          setAddModalOpen(false)
-        }
-      />
+  open={addModalOpen}
+  onClose={() => setAddModalOpen(false)}
+  onSubmit={async (values) => {
+    console.log("Add Request", values);
+    setAddModalOpen(false);
+  }}
+/>
 
       <EditRequestModal
-        open={editModalOpen}
-        defaultValues={
-          selectedRequest
-        }
-        onClose={() =>
-          setEditModalOpen(false)
-        }
-      />
+  open={editModalOpen}
+  defaultValues={selectedRequest}
+  onClose={() => setEditModalOpen(false)}
+  onSubmit={async (values) => {
+    console.log("Edit Request", values);
+    setEditModalOpen(false);
+  }}
+/>
     </div>
   );
 }
+
