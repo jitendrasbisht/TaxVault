@@ -15,7 +15,7 @@ export type TaxProfileValidationResult = {
 };
 
 function buildPayload(profile: TaxProfile, clientId: number) {
-  const { id, client_id, ...rest } = profile;
+  const { id: _id, client_id, ...rest } = profile;
 
   return {
     client_id: client_id ?? clientId,
@@ -172,3 +172,4 @@ export function useTaxProfile(clientId?: number | null) {
     validateProfile,
   };
 }
+

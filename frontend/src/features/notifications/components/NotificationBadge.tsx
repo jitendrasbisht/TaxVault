@@ -8,10 +8,7 @@ export default function NotificationBadge({
   count,
 }: NotificationBadgeProps) {
   return (
-    <button
-      type="button"
-      className="relative inline-flex items-center justify-center rounded-lg p-2 hover:bg-muted transition-colors"
-    >
+    <div className="relative inline-flex items-center justify-center rounded-lg p-2 hover:bg-muted transition-colors">
       <Bell className="h-5 w-5" />
 
       {count > 0 && (
@@ -19,6 +16,6 @@ export default function NotificationBadge({
           {count > 99 ? "99+" : count}
         </span>
       )}
-    </button>
+    </div>
   );
 }

@@ -11,11 +11,15 @@ import {
 interface AddRequestModalProps {
   open: boolean;
   onClose: () => void;
+  onSubmit: (
+    values: RequestFormValues,
+  ) => Promise<void> | void;
 }
 
 export function AddRequestModal({
   open,
   onClose,
+  onSubmit,
 }: AddRequestModalProps) {
   const [saving, setSaving] =
     useState(false);
@@ -30,8 +34,7 @@ export function AddRequestModal({
     setSaving(true);
 
     try {
-      console.log(values);
-
+      await onSubmit(values);
       onClose();
     } finally {
       setSaving(false);
@@ -39,8 +42,8 @@ export function AddRequestModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-2xl rounded-xl bg-background p-6 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <div className="w-full max-w-2xl rounded-xl bg-white dark:bg-slate-900 p-6 shadow-xl">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-semibold">
             New Document Request
@@ -68,3 +71,5 @@ export function AddRequestModal({
     </div>
   );
 }
+
+

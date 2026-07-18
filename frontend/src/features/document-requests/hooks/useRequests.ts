@@ -1,6 +1,14 @@
-﻿import { useEffect, useState } from "react";
+﻿import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import { requestService } from "../services/mockRequest.service";
+import {
+  CreateRequestDto,
+  UpdateRequestDto,
+} from "../services/mockRequest.service";
 import { DocumentRequest } from "../types/request";
 
 export function useRequests(
@@ -12,46 +20,69 @@ export function useRequests(
   const [loading, setLoading] =
     useState(true);
 
-  useEffect(() => {
-    let active = true;
+  const refresh = useCallback(async () => {
+    setLoading(true);
 
-    async function loadRequests() {
-      try {
-        setLoading(true);
+    try {
+      const data =
+        await requestService.getRequests();
 
-        const data =
-          await requestService.getRequests();
-
-        const filteredRequests =
-          clientId
-            ? data.filter(
-                (request) =>
-                  request.clientId ===
-                  clientId,
-              )
-            : data;
-
-        if (active) {
-          setRequests(
-            filteredRequests,
-          );
-        }
-      } finally {
-        if (active) {
-          setLoading(false);
-        }
-      }
+      setRequests(
+        clientId
+          ? data.filter(
+              (request) =>
+                request.clientId === clientId,
+            )
+          : data,
+      );
+    } finally {
+      setLoading(false);
     }
-
-    loadRequests();
-
-    return () => {
-      active = false;
-    };
   }, [clientId]);
+
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+
+  async function createRequest(
+    payload: CreateRequestDto,
+  ) {
+    await requestService.createRequest(
+      payload,
+    );
+
+    await refresh();
+  }
+
+  async function updateRequest(
+    id: string,
+    payload: UpdateRequestDto,
+  ) {
+    await requestService.updateRequest(
+      id,
+      payload,
+    );
+
+    await refresh();
+  }
+
+  async function deleteRequest(
+    id: string,
+  ) {
+    await requestService.deleteRequest(
+      id,
+    );
+
+    await refresh();
+  }
 
   return {
     requests,
     loading,
+    refresh,
+    createRequest,
+    updateRequest,
+    deleteRequest,
   };
 }
+

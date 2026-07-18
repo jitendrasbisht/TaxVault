@@ -65,8 +65,8 @@ export function ClientListPage() {
     useState<Client | null>(null);
 
   useEffect(() => {
-    setClientData(clients);
-  }, [clients]);
+  setClientData(clients);
+}, [clients]);
 
   async function refreshClients() {
     const data =
@@ -119,9 +119,8 @@ export function ClientListPage() {
   }
 
   const filteredClients = useMemo(() => {
-    const query = search
-      .trim()
-      .toLowerCase();
+    const query = search.trim().toLowerCase();
+
 
     const filtered =
       clientData.filter((client) => {
@@ -146,6 +145,13 @@ export function ClientListPage() {
           matchesStatus
         );
       });
+
+    console.table(
+      filtered.map(c => ({
+        name: c.name,
+        pan: c.pan
+      }))
+    );
 
     return [...filtered].sort(
       (a, b) => {
@@ -337,3 +343,7 @@ export function ClientListPage() {
 }
 
 export default ClientListPage;
+
+
+
+

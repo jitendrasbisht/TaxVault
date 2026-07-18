@@ -1,0 +1,67 @@
+# NOTE:
+# Update RequestListPage.tsx as follows.
+
+# 1. Add:
+import { requestService } from "../services/mockRequest.service";
+
+# 2. Change:
+const {
+  requests,
+  loading,
+  createRequest,
+  updateRequest,
+} = useRequests();
+
+# 3. Add:
+
+async function handleCreateRequest(
+  values: RequestFormValues,
+) {
+  await createRequest(values);
+  setAddModalOpen(false);
+}
+
+async function handleUpdateRequest(
+  values: RequestFormValues,
+) {
+  if (!selectedRequest.clientId) return;
+
+  const existing =
+    requests.find(
+      (r) =>
+        r.clientId ===
+          selectedRequest.clientId &&
+        r.title ===
+          selectedRequest.title,
+    );
+
+  if (!existing) return;
+
+  await updateRequest(
+    existing.id,
+    values,
+  );
+
+  setEditModalOpen(false);
+}
+
+# 4. Replace AddRequestModal
+
+<AddRequestModal
+  open={addModalOpen}
+  onClose={() =>
+    setAddModalOpen(false)
+  }
+  onSubmit={handleCreateRequest}
+/>
+
+# 5. Replace EditRequestModal
+
+<EditRequestModal
+  open={editModalOpen}
+  defaultValues={selectedRequest}
+  onClose={() =>
+    setEditModalOpen(false)
+  }
+  onSubmit={handleUpdateRequest}
+/>
