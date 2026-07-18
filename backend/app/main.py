@@ -2,6 +2,7 @@
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.router import api_router
+from app.api.routes import tax_profile
 from app.core.config import settings
 
 app = FastAPI(
@@ -20,3 +21,8 @@ app.add_middleware(
 )
 
 app.include_router(api_router)
+app.include_router(
+    tax_profile.router,
+    prefix="/api/v1",
+    tags=["Tax Profiles"],
+)
